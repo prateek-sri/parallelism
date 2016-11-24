@@ -71,7 +71,7 @@ run:
 	@echo "Resolving CUDA runtime library..."
 	#@$(shell echo $(RUNTIME_ENV)) #LD_LIBRARY_PATH=$(CUDA_LIB_PATH) ldd $(BIN) | grep cuda
 	#@$(shell echo $(RUNTIME_ENV)) LD_LIBRARY_PATH=$(CUDA_LIB_PATH) $(BIN) $(ARGS)
-	#@$(shell echo $(RUNTIME_ENV)) $(BIN) $(ARGS)
+	@$(shell echo $(RUNTIME_ENV)) $(BIN) $(ARGS)
 
 debug:
 	@echo "Resolving CUDA runtime library..."
