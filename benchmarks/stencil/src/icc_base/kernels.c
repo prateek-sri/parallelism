@@ -13,7 +13,7 @@ void cpu_stencil(float c0,float c1, float *A0,float * Anext,const int nx, const 
 
   int i;  
   int j,k;
-  #pragma omp parallel for
+  #pragma omp parallel for collapse(2)
   //#pragma omp parallel for collapse(3)
 	for(i=1;i<nx-1;i++)
 	{
