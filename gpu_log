@@ -1,0 +1,543 @@
+GFLOPs = 0.408833
+IO        : 0.107801
+Compute   : 0.009618
+Timer Wall Time: 0.117561
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sgemm BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sgemm BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_default/sgemm | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_default/sgemm -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt
+GFLOPs = 6.47802
+IO        : 0.029988
+Kernel    : 0.000607
+Copy      : 0.000621
+Driver    : 0.000543
+Compute   : 1.930918
+CPU/Kernel Overlap: 0.001366
+Timer Wall Time: 1.963059
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/sgemm BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/sgemm BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_default/sgemm | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_default/sgemm -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt
+GFLOPs = 0.645145
+IO        : 0.030360
+Kernel    : 0.006095
+Copy      : 0.014843
+Driver    : 0.006095
+Compute   : 1.470020
+CPU/Kernel Overlap: 0.009024
+Timer Wall Time: 1.524346
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sgemm BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sgemm BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+GFLOPs = 0.136859
+IO        : 1.819511
+Compute   : 15.675891
+Timer Wall Time: 17.495558
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sgemm BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sgemm BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_default/sgemm | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_default/sgemm -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt
+GFLOPs = 576.252
+IO        : 1.737550
+Kernel    : 0.003723
+Copy      : 0.003933
+Driver    : 0.000073
+Compute   : 1.349078
+CPU/Kernel Overlap: 0.000137
+Timer Wall Time: 3.094569
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/sgemm BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/sgemm BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_default/sgemm | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_default/sgemm -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt
+GFLOPs = 76.1694
+IO        : 1.732017
+Kernel    : 0.028166
+Copy      : 0.005117
+Driver    : 0.028165
+Compute   : 1.400275
+CPU/Kernel Overlap: 0.028220
+Timer Wall Time: 3.165757
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sgemm BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sgemm BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_tex_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_tex_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (1138x1138)
+4054 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....1152 rows, 36 groups
+Allocating data space: 4448 entries (8.857914% padding)
+Finished converting.
+JDS format has 1152 columns, 18 rows.
+nz_count_len = 36
+IO        : 0.031926
+Kernel    : 0.001909
+Copy      : 0.159353
+Driver    : 0.001908
+Compute   : 1.262001
+CPU/Kernel Overlap: 0.002397
+Timer Wall Time: 1.455687
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_tex_default/spmv BUILDDIR=build/cuda_base_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base_tex SRCDIR=src/cuda_base_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_tex_default/spmv BUILDDIR=build/cuda_base_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out PLATFORM=default BUILD=cuda_base_tex SRCDIR=src/cuda_base_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/output/1138_bus.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_tex_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_tex_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (1138x1138)
+4054 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....1152 rows, 36 groups
+Allocating data space: 4448 entries (8.857914% padding)
+Finished converting.
+JDS format has 1152 columns, 18 rows.
+nz_count_len = 36
+IO        : 0.004686
+Kernel    : 0.001739
+Copy      : 0.162304
+Driver    : 0.001740
+Compute   : 1.262365
+CPU/Kernel Overlap: 0.002221
+Timer Wall Time: 1.431588
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_tex_default/spmv BUILDDIR=build/cuda_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_tex SRCDIR=src/cuda_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_tex_default/spmv BUILDDIR=build/cuda_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out PLATFORM=default BUILD=cuda_tex SRCDIR=src/cuda_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/output/1138_bus.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Input file /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx
+Converting COO to JDS format (1138x1138)
+4054 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....1152 rows, 36 groups
+Allocating data space: 4448 entries (8.857914% padding)
+Finished converting.
+JDS format has 1152 columns, 18 rows.
+nz_count_len = 36
+IO        : 0.004920
+Kernel    : 0.001234
+Copy      : 0.160682
+Driver    : 0.001233
+Compute   : 1.259848
+CPU/Kernel Overlap: 0.001703
+Timer Wall Time: 1.427162
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/spmv BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/spmv BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/output/1138_bus.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (1138x1138)
+4054 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....1152 rows, 36 groups
+Allocating data space: 4448 entries (8.857914% padding)
+Finished converting.
+JDS format has 1152 columns, 18 rows.
+nz_count_len = 36
+IO        : 0.004575
+Kernel    : 0.001351
+Copy      : 0.159715
+Driver    : 0.001351
+Compute   : 1.261661
+CPU/Kernel Overlap: 0.001784
+Timer Wall Time: 1.427746
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/spmv BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/spmv BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/output/1138_bus.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+CPU-based sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (1138x1138)
+4054 matrix entries, warp size = 1, row padding align = 1, pack size = 1
+
+Padding data....1138 rows, 1138 groups
+Allocating data space: 4054 entries (0.000000% padding)
+Finished converting.
+JDS format has 1138 columns, 18 rows.
+nz_count_len = 1138
+IO        : 0.004325
+Compute   : 0.001656
+Timer Wall Time: 0.005982
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/spmv BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/spmv BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/output/1138_bus.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_tex_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_tex_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (11948x11948)
+149090 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....11968 rows, 374 groups
+Allocating data space: 150144 entries (0.701993% padding)
+Finished converting.
+JDS format has 11968 columns, 49 rows.
+nz_count_len = 374
+IO        : 0.108360
+Kernel    : 0.002140
+Copy      : 0.139954
+Driver    : 0.002141
+Compute   : 1.258667
+CPU/Kernel Overlap: 0.002175
+Timer Wall Time: 1.509164
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_tex_default/spmv BUILDDIR=build/cuda_base_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base_tex SRCDIR=src/cuda_base_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_tex_default/spmv BUILDDIR=build/cuda_base_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out PLATFORM=default BUILD=cuda_base_tex SRCDIR=src/cuda_base_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/output/bcsstk18.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_tex_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_tex_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (11948x11948)
+149090 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....11968 rows, 374 groups
+Allocating data space: 150144 entries (0.701993% padding)
+Finished converting.
+JDS format has 11968 columns, 49 rows.
+nz_count_len = 374
+IO        : 0.069230
+Kernel    : 0.001829
+Copy      : 0.139287
+Driver    : 0.001829
+Compute   : 1.259633
+CPU/Kernel Overlap: 0.001864
+Timer Wall Time: 1.470024
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_tex_default/spmv BUILDDIR=build/cuda_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_tex SRCDIR=src/cuda_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_tex_default/spmv BUILDDIR=build/cuda_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out PLATFORM=default BUILD=cuda_tex SRCDIR=src/cuda_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/output/bcsstk18.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Input file /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx
+Converting COO to JDS format (11948x11948)
+149090 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....11968 rows, 374 groups
+Allocating data space: 150144 entries (0.701993% padding)
+Finished converting.
+JDS format has 11968 columns, 49 rows.
+nz_count_len = 374
+IO        : 0.068627
+Kernel    : 0.002317
+Copy      : 0.138477
+Driver    : 0.002317
+Compute   : 1.209563
+CPU/Kernel Overlap: 0.002351
+Timer Wall Time: 1.419029
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/spmv BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/spmv BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/output/bcsstk18.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (11948x11948)
+149090 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....11968 rows, 374 groups
+Allocating data space: 150144 entries (0.701993% padding)
+Finished converting.
+JDS format has 11968 columns, 49 rows.
+nz_count_len = 374
+IO        : 0.068755
+Kernel    : 0.002617
+Copy      : 0.138198
+Driver    : 0.002616
+Compute   : 1.211655
+CPU/Kernel Overlap: 0.002650
+Timer Wall Time: 1.421270
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/spmv BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/spmv BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/output/bcsstk18.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+CPU-based sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (11948x11948)
+149090 matrix entries, warp size = 1, row padding align = 1, pack size = 1
+
+Padding data....11948 rows, 11948 groups
+Allocating data space: 149090 entries (0.000000% padding)
+Finished converting.
+JDS format has 11948 columns, 49 rows.
+nz_count_len = 11948
+IO        : 0.069307
+Compute   : 0.055752
+Timer Wall Time: 0.125060
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/spmv BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/spmv BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/output/bcsstk18.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_tex_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_tex_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (146689x146689)
+3636649 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....146720 rows, 4585 groups
+Allocating data space: 3637664 entries (0.027903% padding)
+Finished converting.
+JDS format has 146720 columns, 49 rows.
+nz_count_len = 4585
+IO        : 1.968251
+Kernel    : 0.012271
+Copy      : 0.148711
+Driver    : 0.012272
+Compute   : 1.260427
+CPU/Kernel Overlap: 0.012313
+Timer Wall Time: 3.389713
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_tex_default/spmv BUILDDIR=build/cuda_base_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base_tex SRCDIR=src/cuda_base_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_tex_default/spmv BUILDDIR=build/cuda_base_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out PLATFORM=default BUILD=cuda_base_tex SRCDIR=src/cuda_base_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/output/Dubcova3.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_tex_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_tex_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (146689x146689)
+3636649 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....146720 rows, 4585 groups
+Allocating data space: 3637664 entries (0.027903% padding)
+Finished converting.
+JDS format has 146720 columns, 49 rows.
+nz_count_len = 4585
+IO        : 1.890227
+Kernel    : 0.012004
+Copy      : 0.147149
+Driver    : 0.012003
+Compute   : 1.263012
+CPU/Kernel Overlap: 0.012044
+Timer Wall Time: 3.312441
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_tex_default/spmv BUILDDIR=build/cuda_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_tex SRCDIR=src/cuda_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_tex_default/spmv BUILDDIR=build/cuda_tex_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out PLATFORM=default BUILD=cuda_tex SRCDIR=src/cuda_tex' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/output/Dubcova3.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Input file /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin
+Converting COO to JDS format (146689x146689)
+3636649 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....146720 rows, 4585 groups
+Allocating data space: 3637664 entries (0.027903% padding)
+Finished converting.
+JDS format has 146720 columns, 49 rows.
+nz_count_len = 4585
+IO        : 1.887411
+Kernel    : 0.014592
+Copy      : 0.148163
+Driver    : 0.014591
+Compute   : 1.261753
+CPU/Kernel Overlap: 0.014631
+Timer Wall Time: 3.311971
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/spmv BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/spmv BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/output/Dubcova3.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_default/spmv | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_default/spmv -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out
+CUDA accelerated sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (146689x146689)
+3636649 matrix entries, warp size = 32, row padding align = 1, pack size = 1
+
+Padding data....146720 rows, 4585 groups
+Allocating data space: 3637664 entries (0.027903% padding)
+Finished converting.
+JDS format has 146720 columns, 49 rows.
+nz_count_len = 4585
+IO        : 1.898117
+Kernel    : 0.014428
+Copy      : 0.148967
+Driver    : 0.014428
+Compute   : 1.216703
+CPU/Kernel Overlap: 0.014467
+Timer Wall Time: 3.278263
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/spmv BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_default/spmv BUILDDIR=build/cuda_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out PLATFORM=default BUILD=cuda SRCDIR=src/cuda' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/output/Dubcova3.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+CPU-based sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (146689x146689)
+3636649 matrix entries, warp size = 1, row padding align = 1, pack size = 1
+
+Padding data....146689 rows, 146689 groups
+Allocating data space: 3636649 entries (0.000000% padding)
+Finished converting.
+JDS format has 146689 columns, 49 rows.
+nz_count_len = 146689
+IO        : 1.909946
+Compute   : 1.886587
+Timer Wall Time: 3.796534
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/spmv BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/spmv BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/output/Dubcova3.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+IO        : 0.101417
+Compute   : 0.290074
+Timer Wall Time: 0.391532
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sad BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sad BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/default/out.bin PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/output/out.bin /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/default/out.bin' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_default/sad | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_default/sad -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/default/out.bin
+IO        : 0.145449
+Kernel    : 0.001010
+Copy      : 1.417886
+Driver    : 0.000356
+Compute   : 0.000590
+CPU/Kernel Overlap: 0.000649
+Timer Wall Time: 1.565246
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sad BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sad BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/default/out.bin PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/output/out.bin /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/default/out.bin' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+IO        : 0.068402
+Compute   : 0.109968
+Timer Wall Time: 0.178412
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/sad BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/sad BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/default/out.bin PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/default/output/out.bin /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/default/out.bin' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+IO        : 0.748404
+Compute   : 23.532922
+Timer Wall Time: 24.281366
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sad BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/base_default/sad BUILDDIR=build/base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/large/out.bin PLATFORM=default BUILD=base SRCDIR=src/base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/output/out.bin /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/large/out.bin' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Resolving CUDA runtime library...
+#@ #LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 ldd build/cuda_base_default/sad | grep cuda
+#@ LD_LIBRARY_PATH=/opt/apps/cuda/6.5/lib64 build/cuda_base_default/sad -i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/large/out.bin
+IO        : 1.551711
+Kernel    : 0.052420
+Copy      : 1.851964
+Driver    : 0.000096
+Compute   : 0.037895
+CPU/Kernel Overlap: 0.000149
+Timer Wall Time: 3.498641
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sad BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cuda_base_default/sad BUILDDIR=build/cuda_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/large/out.bin PLATFORM=default BUILD=cuda_base SRCDIR=src/cuda_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/output/out.bin /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/large/out.bin' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+IO        : 0.729626
+Compute   : 8.283865
+Timer Wall Time: 9.013531
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/sad BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/cpu_default/sad BUILDDIR=build/cpu_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/reference.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/input/frame.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/large/out.bin PLATFORM=default BUILD=cpu SRCDIR=src/cpu' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sad/large/output/out.bin /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad/run/large/out.bin' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sad

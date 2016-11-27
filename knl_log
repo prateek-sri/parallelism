@@ -1,0 +1,82 @@
+GFLOPs = 0.47576
+IO        : 0.115117
+Compute   : 0.008265
+Timer Wall Time: 0.123817
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/sgemm BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/sgemm BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/small/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/small/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+GFLOPs = 0.893726
+IO        : 6.471801
+Compute   : 2.400497
+Timer Wall Time: 8.872682
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/sgemm BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/sgemm BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix1.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt,/home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/input/matrix2t.txt -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/sgemm/medium/output/matrix3.txt /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm/run/medium/matrix3.txt' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/sgemm
+CPU-based sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (1138x1138)
+4054 matrix entries, warp size = 1, row padding align = 1, pack size = 1
+
+Padding data....1138 rows, 1138 groups
+Allocating data space: 4054 entries (0.000000% padding)
+Finished converting.
+JDS format has 1138 columns, 18 rows.
+nz_count_len = 1138
+IO        : 0.019404
+Compute   : 0.007445
+Timer Wall Time: 0.026854
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/spmv BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/spmv BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/1138_bus.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/small/output/1138_bus.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/small/1138_bus.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+CPU-based sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (11948x11948)
+149090 matrix entries, warp size = 1, row padding align = 1, pack size = 1
+
+Padding data....11948 rows, 11948 groups
+Allocating data space: 149090 entries (0.000000% padding)
+Finished converting.
+JDS format has 11948 columns, 49 rows.
+nz_count_len = 11948
+IO        : 0.317437
+Compute   : 0.022083
+Timer Wall Time: 0.339524
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/spmv BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/spmv BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/bcsstk18.mtx,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/medium/output/bcsstk18.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/medium/bcsstk18.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+CPU-based sparse matrix vector multiplication****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and Shengzhao Wu<wu14@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+Converting COO to JDS format (146689x146689)
+3636649 matrix entries, warp size = 1, row padding align = 1, pack size = 1
+
+Padding data....146689 rows, 146689 groups
+Allocating data space: 3636649 entries (0.000000% padding)
+Finished converting.
+JDS format has 146689 columns, 49 rows.
+nz_count_len = 146689
+IO        : 8.134207
+Compute   : 0.387215
+Timer Wall Time: 8.521427
+Pass
+Parboil parallel benchmark suite, version 0.2
+
+Running 'make -q -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/spmv BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'make -f /home1/04338/kshitiz/parallel/project/parallelism/common/mk/Makefile BIN=build/omp_base_default/spmv BUILDDIR=build/omp_base_default PARBOIL_ROOT=/home1/04338/kshitiz/parallel/project/parallelism ARGS=-i /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/Dubcova3.mtx.bin,/home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/input/vector.bin -o /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out PLATFORM=default BUILD=omp_base SRCDIR=src/omp_base' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+Running 'tools/compare-output /home1/04338/kshitiz/parallel/project/parallelism/datasets/spmv/large/output/Dubcova3.mtx.out /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv/run/large/Dubcova3.mtx.out' in /home1/04338/kshitiz/parallel/project/parallelism/benchmarks/spmv
+default
+large
