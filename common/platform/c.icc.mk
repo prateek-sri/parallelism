@@ -13,5 +13,5 @@ CXX = icc
 PLATFORM_CXXFLAGS = -O3 -xMIC-AVX512 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp
 
 LINKER = icc
-PLATFORM_LDFLAGS = -lm -lpthread -parallel -qopenmp
+PLATFORM_LDFLAGS = -lm -lpthread -qopenmp
 

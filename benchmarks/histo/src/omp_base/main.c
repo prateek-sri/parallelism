@@ -100,6 +100,7 @@ int main(int argc, char* argv[]) {
 
 #pragma omp critical
       if (histo[value] < UINT8_MAX) {
+//#pragma omp atomic
         ++histo[value];
       }
     }
