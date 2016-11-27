@@ -57,6 +57,7 @@ OBJS = $(call INBUILDDIR,$(SRCDIR_OBJS))
 default: $(BUILDDIR) $(BIN)
 
 run:
+	@${shell(source ~/parallel/project/parallelism/common/mk/set.sh)}
 	@$(BIN) $(ARGS)
 
 debug:
