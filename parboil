@@ -3,12 +3,14 @@
 # (c) 2007 The Board of Trustees of the University of Illinois.
 
 import sys
+import os
 
 try:
 	import driver
 except ImportError:
 	sys.stderr.write("Cannot run driver.  Are you running it from the parboil root directory?")
 	sys.exit(-1)
-
+os.environ["OMP_NUM_THREADS"] = "256"
+#print os.environ["OMP_NUM_THREADS"]
 sys.exit(driver.run())
 
