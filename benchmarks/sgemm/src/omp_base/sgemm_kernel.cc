@@ -24,7 +24,7 @@ void basicSgemm( char transa, char transb, int m, int n, int k, float alpha, con
     std::cerr << "unsupported value of 'transb' in regtileSgemm()" << std::endl;
     return;
   }
-  #pragma omp parallel for collapse (2)
+  #pragma omp parallel for// collapse (2)
   for (int mm = 0; mm < m; ++mm) {
     for (int nn = 0; nn < n; ++nn) {
       float c = 0.0f;

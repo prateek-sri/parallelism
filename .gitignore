@@ -2,3 +2,4 @@ datasets/*
 benchmarks/*/build/*
 benchmarks/*/run/*
 *.pyc
+*.swp
