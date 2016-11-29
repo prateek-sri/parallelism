@@ -23,9 +23,7 @@ int doCompute(struct cartesian *data1, int n1, struct cartesian *data2,
         n2 = n1;
         data2 = data1;
     }
-    //  #pragma omp parallel for 
-    for (ii =0; ii < nbins+2; ii++)
-        data_bins[ii] = 0;
+#pragma omp parallel for 
     for (ii =0; ii < nbins+2; ii++)
     {
         for (j = 0; j < 256; j++)
@@ -33,27 +31,20 @@ int doCompute(struct cartesian *data1, int n1, struct cartesian *data2,
             data_bins1[j][ii] = 0;
         }
     }
-    for (i = 0; i < 1 /* ((doSelf) ? n1-1 : n1)*/; i++)
+
+    for (i = 0; i < ((doSelf) ? n1-1 : n1); i++)
     {
         const register float xi = data1[i].x;
         const register float yi = data1[i].y;
         const register float zi = data1[i].z;
 
-        int start  = ((doSelf) ? i+1 : 0); 
-        int end = n2-1;
-        int num_ele = end -start +1;
-#pragma omp parallel
+	#pragma omp parallel
         {
             int num_thd = omp_get_num_threads ();
-            printf("thid %d\n", num_thd);
             int tid = omp_get_thread_num ();
-            int t1 = num_ele / (num_thd);
-            int t2 = num_ele % (num_thd);
-            int slice_begin = start + t1 * tid + (tid < t2? tid : t2);
-            int slice_end = start + t1 * (tid+1) + ((tid+1) < t2? (tid+1) : t2);
-            printf("%d %d %d %d %d %d %d\n", start, end , slice_begin, slice_end, t1, t2, num_ele);
-#pragma omp for      
-            for (j = slice_begin; j < slice_end; j++)
+	    
+	    #pragma omp for      
+	    for (j = ((doSelf) ? i+1 : 0); j < n2; j++)
             {
                 register float dot = xi * data2[j].x + yi * data2[j].y + 
                     zi * data2[j].z;
@@ -70,13 +61,14 @@ int doCompute(struct cartesian *data1, int n1, struct cartesian *data2,
                         max = k;
                     else 
                         min = k;
-                };
+                }
                 //#pragma omp atomic	  
                 data_bins1[tid][max-1] += 1; /*k = max;*/ 
 
             }
         }
     }
+#pragma omp parallel for
             for (ii =0; ii < nbins+2; ii++)
             {
                 for (j = 0; j < 256; j++)
@@ -84,7 +76,6 @@ int doCompute(struct cartesian *data1, int n1, struct cartesian *data2,
                     data_bins[ii]+=data_bins1[j][ii];
                 }
             }
-
     return 0;
 }
 
