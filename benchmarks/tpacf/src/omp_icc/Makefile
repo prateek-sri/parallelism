@@ -2,5 +2,5 @@
 
 LANGUAGE=c
 SRCDIR_OBJS=args.o model_compute_cpu.o model_io.o main.o
-APP_CFLAGS=-qopenmp
+APP_CFLAGS=
 APP_LDFLAGS=-lm
