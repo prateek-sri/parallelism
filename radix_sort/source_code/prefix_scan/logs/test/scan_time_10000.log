@@ -1,0 +1,11 @@
+---------------------------------------------------------
+Found 1 CUDA devices
+Device 0: Tesla K20m
+   SMs:        13
+   Global mem: 4800 MB
+   CUDA Cap:   3.5
+---------------------------------------------------------
+Thrust GPU time: 0.253 ms
+CPU_time: 0.036 ms
+Scan: 0.141x speedup
+Scan outputs are correct!
