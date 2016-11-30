@@ -74,6 +74,7 @@ int main(int argc, char* argv[]) {
   }
 
   unsigned int* img = (unsigned int*) malloc (img_width*img_height*sizeof(unsigned int));
+  unsigned int* histo_i = (unsigned int*) malloc (histo_width * histo_height * sizeof(unsigned int));
   unsigned char* histo = (unsigned char*) calloc (histo_width*histo_height, sizeof(unsigned char));
   
   pb_SwitchToSubTimer(&timers, "Input", pb_TimerID_IO);
@@ -91,18 +92,36 @@ int main(int argc, char* argv[]) {
 
   int iter;
   for (iter = 0; iter < numIterations; iter++){
-    memset(histo,0,histo_height*histo_width*sizeof(unsigned char));
-    unsigned int i;
 
+    unsigned int i;
+//    memset(histo,0,histo_height*histo_width*sizeof(unsigned char));
+/*#pragma omp parallel for 
+  for (i=0; i < num_thd; i++) {
+    int thid = omp_get_thread_num();
+    int num_thd  = omp_get_num_threads();
+    memset(histo_i + (thid*histo_height*histo_width/num_thd),0,histo_height*histo_width*sizeof(unsigned int)/num_thd);
+  }
+*/
+
+#pragma omp parallel for
+  for (i = 0; i < histo_width*histo_height; i++)
+    histo_i[i] = 0;
 #pragma omp parallel for 
     for (i = 0; i < img_width*img_height; ++i) {
       const unsigned int value = img[i];
-
-#pragma omp critical
-      if (histo[value] < UINT8_MAX) {
-        ++histo[value];
-      }
+//#pragma omp critical
+//      if (histo[value] < UINT8_MAX) {
+#pragma omp atomic
+        ++histo_i[value];
     }
+#pragma omp parallel for
+	for (i = 0; i <histo_width*histo_height; ++i) {
+		histo[i] = histo_i[i]>UINT8_MAX?UINT8_MAX:histo_i[i];
+		//if (histo_i[i] > UINT8_MAX)
+		//	histo[i] = UINT8_MAX;
+		//else
+		//	histo[i] = histo_i[i];
+	}
   }
 
 //  pb_SwitchToTimer(&timers, pb_TimerID_IO);
@@ -116,6 +135,7 @@ int main(int argc, char* argv[]) {
 
   free(img);
   free(histo);
+  free(histo_i);
 
   pb_SwitchToTimer(&timers, pb_TimerID_NONE);
 
