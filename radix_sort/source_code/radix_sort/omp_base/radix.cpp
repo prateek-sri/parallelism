@@ -7,7 +7,43 @@
 #include <omp.h>
 #include "CycleTimer.h"
 
-#define SIZE 100000
+#define SIZE 200000
+static int scan (int * shared, int *arr, int size)
+{
+    int num_thd, tid;
+    int64_t slice_len,slice_begin, slice_end, t1, t2, k;
+    num_thd = omp_get_num_threads ();
+    tid = omp_get_thread_num ();
+    t1 = size / (num_thd);
+    t2 = size % (num_thd);
+    slice_begin = t1 * tid + (tid < t2? tid : t2);
+    slice_end = t1 * (tid+1) + ((tid+1) < t2? (tid+1) : t2);
+    shared[tid] = 0;
+    for (k = slice_begin; k < slice_end; ++k)
+       shared[tid] += arr[k];
+    int64_t ret;
+#pragma omp barrier
+#pragma omp single
+    {
+        int64_t tmp = shared[0];
+        int64_t cur;
+        shared[0] =0;
+        for (k=1; k<=num_thd; k++)
+        {
+            cur = shared[k];
+            shared[k]=tmp+shared[k-1];
+            tmp = cur;
+        }
+    }
+#pragma omp barrier
+    t1 = shared[tid];
+    for (k = slice_begin ; k < slice_end; ++k) {
+        int64_t tmp = arr[k];
+        arr[k] = t1;
+        t1 += tmp;
+    }
+    return shared[num_thd];
+}
 
 void printarray(int arr[], int size)
 {
@@ -55,14 +91,15 @@ int radixsortkernel(int *arr, int *temp, int size, int bit)
 void radixsort(int* arr, int l)
 {
     int i;
-    int *bins;
+    int *bins, *buffer;
     int maxi = 0;
     int bit = 0;
     int temp[l];
     int value=0;
     int max_threads=omp_get_max_threads();
     bins=(int*)malloc(max_threads*sizeof(int));
-    int total=0;
+    buffer=(int*)malloc(max_threads*sizeof(int));
+    //int total=0;
     for(i=0;i<max_threads;i++)
     {
         bins[i]=0;
@@ -73,6 +110,8 @@ void radixsort(int* arr, int l)
         if (arr[i] > maxi) 
             maxi = arr[i];
     }
+
+    int total;
 
     while (maxi>value)
     {
@@ -90,10 +129,7 @@ void radixsort(int* arr, int l)
             bins[id]=radixsortkernel(&arr[slice_begin],&temp[slice_begin],slice_end-slice_begin,bit);
             val=bins[id];
 #pragma omp barrier
-#pragma omp single
-            {
-                total=prefix_sum(bins,num_thd);
-            }
+            total=scan(buffer,bins,num_thd);
 #pragma omp barrier
             start_1=total+(slice_begin-bins[id])-val;
             for(int j=0;j<(slice_end-slice_begin);j++)

@@ -86,9 +86,9 @@ radix.cpp(145,1):remark #34051: REGISTER ALLOCATION : [main] radix.cpp:145
         Spilled       :       9
         
     Routine stack
-        Variables     :   402068 bytes*
-            Reads     :       9 [4.50e+04 ~ 3.0%]
-            Writes    :       6 [4.00e+05 ~ 26.4%]
+        Variables     :   802068 bytes*
+            Reads     :       9 [8.94e+04 ~ 3.0%]
+            Writes    :       6 [7.94e+05 ~ 26.4%]
         Spills        :      32 bytes*
             Reads     :      12 [2.75e+00 ~ 0.0%]
             Writes    :       6 [2.75e+00 ~ 0.0%]
