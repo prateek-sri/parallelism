@@ -7,7 +7,7 @@
 #include <omp.h>
 #include "CycleTimer.h"
 
-#define SIZE 256
+#define SIZE 16777216
 static int scan (int * shared, int *arr, int size)
 {
     int num_thd, tid;
@@ -70,9 +70,9 @@ int prefix_sum(int* arr, int size)
 
 void  radixsortkernel(int *arr, int *temp, int size, int bit_cur, int* bins)
 {
-    for (int bit = bit_cur; bit <bit_cur+4; bit++) 
+    for (int bit = bit_cur; bit < bit_cur + 4; bit++) 
     {
-        if(bit%2 ==0)
+        if(bit % 2 == 0)
         {
             int bin[2];
             int ret = 0;
@@ -104,31 +104,31 @@ void  radixsortkernel(int *arr, int *temp, int size, int bit_cur, int* bins)
             ret = bin[0];
 
             for (int i = (size - 1); i >= 0; i--) 
-                arr[--bin[((arr[i] >> bit) & 1)]] = temp[i];
+                arr[--bin[(temp[i] >> bit) & 1]] = temp[i];
         }
     }
     int last = 0;
     int i;
-    for (i =0; i <size; i++)
+    for (i =0; i < size; i++)
         temp[i] = arr[i];
 
-    for(i =0; i <16; i++)
+    for(i =0; i < 16; i++)
         bins[i] =0;
-    for(i = 0; i <(size-1); i++)
+    for(i = 0; i < (size - 1); i++)
     {
-        if ((temp[i]>>bit_cur) &0xf!= (temp[i+1]>>bit_cur &0xf))
+        if ( ( (temp[i] >> bit_cur) & 0xf) != ( (temp[i+1] >> bit_cur) & 0xf) )
         {
-            bins[(temp[i]>>bit_cur )&0xf] = i+1 - last;
-            last += bins[(temp[i]>>bit_cur) &0xf];
+            bins[(temp[i] >> bit_cur) & 0xf] = i + 1 - last;
+            last += bins[(temp[i] >> bit_cur) & 0xf];
         }
     }
 
-    if ((temp[i-1]>>bit_cur) & 0xf == (temp[i]>>bit_cur &0xf))
+    if ( ( (temp[i-1] >> bit_cur) & 0xf) == ( (temp[i] >> bit_cur) & 0xf) )
     {
         bins[(temp[i]>>bit_cur) & 0xf] = i+1 - last;
     }
     else
-        bins[(temp[i]>>bit_cur) &0xf]++;
+        bins[(temp[i]>>bit_cur) & 0xf]++;
 }
 
 void radixsort(int* arr, int l)
@@ -163,7 +163,7 @@ void radixsort(int* arr, int l)
 #pragma omp barrier
 #pragma omp single
             {
-                printarray(bins,16);
+                //printarray(bins,16);
                 for(int j = 0; j < num_thd*16; j++)
                 {
                     //    printf("%d,", (j/256 + (j%256) * 16));
@@ -182,8 +182,8 @@ void radixsort(int* arr, int l)
             for(int j=0;j<(slice_end-slice_begin);j++)
             {
                 int gindex = temp_bins[ id + 256 * ((temp[slice_begin + j]>>bit) &0xf)];
-                int lindex = bins[(temp[slice_begin + j]>>bit) &0xf];
-                arr[ gindex + j - lindex] = temp[slice_begin+j];
+                int lindex = bins[id * 16 + ( (temp[slice_begin + j]>>bit) & 0xf)];
+                arr[ gindex + j - lindex] = temp[slice_begin + j];
             }
         }
     }
@@ -242,7 +242,7 @@ int main(int argc, char** argv)
             break;
         }
     }
-    printarray(array, size);
+    //printarray(array, size);
     if(flag==1)
     {
         std::cout<<"Fail:\n";
