@@ -69,7 +69,7 @@ default: $(FAILSAFE) $(BUILDDIR) $(BIN)
 
 run:
 	@echo "Resolving CUDA runtime library..."
-	@$(shell echo $(RUNTIME_ENV)) $(BIN) $(ARGS)
+	@$(shell echo $(RUNTIME_ENV)) nvprof --log-file Gpu_metric -m l1_cache_global_hit_rate,l1_cache_local_hit_rate,sm_efficiency,ipc,achieved_occupancy,sm_efficiency_instance,ipc_instance,dram_read_throughput,dram_write_throughput,shared_efficiency,gld_efficiency,gst_efficiency,warp_execution_efficiency,issued_ipc,issue_slot_utilization,local_load_transactions,local_store_transactions,shared_load_transactions,shared_store_transactions,gld_transactions,gst_transactions,sysmem_read_transactions,sysmem_write_transactions,dram_read_transactions,dram_write_transactions,l2_read_transactions,l2_write_transactions,warp_nonpred_execution_efficiency,cf_executed,ldst_executed,flop_count_sp,flop_count_sp_add,flop_count_sp_mul,flop_count_sp_fma,flop_count_dp,flop_count_dp_add,flop_count_dp_mul,flop_count_dp_fma,flop_count_sp_special,stall_inst_fetch,stall_exec_dependency,stall_memory_dependency,stall_sync,stall_other,l1_shared_utilization,l2_utilization,tex_utilization,dram_utilization,sysmem_utilization,ldst_fu_utilization,alu_fu_utilization,cf_fu_utilization,tex_fu_utilization,inst_executed,issue_slots,l2_atomic_throughput,inst_fp_32,inst_fp_64,inst_integer,inst_bit_convert,inst_control,inst_compute_ld_st,inst_misc,inst_inter_thread_communication,atomic_transactions,atomic_transactions_per_request,l2_l1_read_transactions,l2_l1_write_transactions,l2_atomic_transactions,stall_pipe_busy,flop_sp_efficiency,flop_dp_efficiency,stall_memory_throttle,eligible_warps_per_cycle,atomic_throughput $(BIN) $(ARGS)
 
 debug:
 	@echo "Resolving CUDA runtime library..."
