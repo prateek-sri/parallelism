@@ -7,7 +7,7 @@
 #include <omp.h>
 #include "CycleTimer.h"
 
-#define SIZE 200000
+#define SIZE 16777216
 static int scan (int * shared, int *arr, int size)
 {
     int num_thd, tid;
@@ -71,19 +71,19 @@ int prefix_sum(int* arr, int size)
 int radixsortkernel(int *arr, int *temp, int size, int bit)
 {
     int bin[2];
-    int ret=0;
-    bin[0]=0;
-    for(int i=0;i<size;i++)
+    int ret = 0;
+    bin[0] = 0;
+    for (int i = 0; i < size; i++)
     {
-        if(((arr[i]>>bit)&1)==0)
+        if (((arr[i] >> bit ) & 1) == 0)
             bin[0]++;
     }
 
-    bin[1]=size;
-    ret=bin[0];
+    bin[1] = size;
+    ret = bin[0];
 
     for (int i = (size - 1); i >= 0; i--) 
-        temp[--bin[((arr[i]>>bit)&1)]] = arr[i];
+        temp[--bin[((arr[i] >> bit) & 1)]] = arr[i];
 
     return ret;
 }
@@ -99,23 +99,11 @@ void radixsort(int* arr, int l)
     int max_threads=omp_get_max_threads();
     bins=(int*)malloc(max_threads*sizeof(int));
     buffer=(int*)malloc(max_threads*sizeof(int));
-    //int total=0;
-    for(i=0;i<max_threads;i++)
-    {
-        bins[i]=0;
-    }
-#pragma omp parallel for reduction(max : maxi)
-    for (i = 0; i < l; i++)
-    {
-        if (arr[i] > maxi) 
-            maxi = arr[i];
-    }
 
     int total;
 
-    while (maxi>value)
+    for (bit =0; bit <32; bit++)
     {
-        value=1<<bit;
 #pragma omp parallel
         {
             int num_thd=omp_get_num_threads();
@@ -126,25 +114,22 @@ void radixsort(int* arr, int l)
             int slice_begin = t1 * id + (id < t2? id : t2);
             int slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
             //    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
-            bins[id]=radixsortkernel(&arr[slice_begin],&temp[slice_begin],slice_end-slice_begin,bit);
-            val=bins[id];
+            bins[id] = radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit);
+            val = bins[id];
 #pragma omp barrier
-            total=scan(buffer,bins,num_thd);
+#pragma omp single
+            total = prefix_sum(bins,num_thd);
 #pragma omp barrier
-            start_1=total+(slice_begin-bins[id])-val;
-            for(int j=0;j<(slice_end-slice_begin);j++)
+            start_1 = total + (slice_begin - bins[id]) - val;
+            for(int j=0;j<val;j++)
             {
-                if(j<val)
-                {
                     arr[j+bins[id]]=temp[slice_begin+j];
-                }
-                else
-                {
+            }
+            for(int j=val;j<(slice_end-slice_begin);j++)
+            {
                     arr[start_1+j]=temp[slice_begin+j];
-                }
             }
         }
-        bit++;
     }
 }
 
@@ -188,9 +173,10 @@ int main(int argc, char** argv)
     double serialTime = 0.0;
     double startTime = CycleTimer::currentSeconds();
     radixsort(array, size);
+    //radixsort_CPU(array, size);
     double endTime = CycleTimer::currentSeconds();
-    serialTime = endTime - startTime;
-    std::cout<<"Time : "<<serialTime<<std::endl;
+    serialTime = 1000.0 * (endTime - startTime);
+    std::cout<<"Time : "<< serialTime <<" ms" << std::endl;
     int flag=0;
     for(int i=0;i<size;i++)
     {

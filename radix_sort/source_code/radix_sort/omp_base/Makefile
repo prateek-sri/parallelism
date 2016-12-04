@@ -1,9 +1,10 @@
 CC = icc
-CCFLAGS = -g -O3 -qopenmp -qopt-report=2 -lrt 
+CCFLAGS = -g -O3 -qopenmp -xMIC-AVX512 -qopenmp -DUSE_MMAP_LARGE -qopt-report=2 -DUSE_MMAP_LARGE_EXT -lrt 
 
 all:
-	$(CC) $(CCFLAGS) radix.cpp -lm -o radix
-	#g++ radix.cpp -o radix
-	./radix
+	@echo Running radix sort with $(OMP_NUM_THREADS) threads
+	mkdir -p bin
+	$(CC) $(CCFLAGS) radix.cpp -lm -o bin/radix
+	./bin/radix
 clean:
-	rm radix
+	rm -rf bin
