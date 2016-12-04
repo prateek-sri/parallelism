@@ -3,3 +3,7 @@ benchmarks/*/build/*
 benchmarks/*/run/*
 *.pyc
 *.swp
+*Gpu_metric*
+*.optrpt
+*bin*
+*.o
