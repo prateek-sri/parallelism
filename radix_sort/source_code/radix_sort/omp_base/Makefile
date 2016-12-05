@@ -6,5 +6,7 @@ all:
 	mkdir -p bin
 	$(CC) $(CCFLAGS) radix.cpp -lm -o bin/radix
 	./bin/radix
+test:
+	./bin/radix
 clean:
 	rm -rf bin

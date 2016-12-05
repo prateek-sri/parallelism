@@ -7,28 +7,29 @@
 #include <omp.h>
 #include "CycleTimer.h"
 
-#define SIZE 16777216
-static int scan (int * shared, int *arr, int size)
+#define SIZE 33554432
+#define MAX_THREADS 128
+#define NUM_BINS 16
+static void scan (int * __restrict shared, int * __restrict arr, int size)
 {
     int num_thd, tid;
-    int64_t slice_len,slice_begin, slice_end, t1, t2, k;
-    num_thd = omp_get_num_threads ();
+    int slice_len,slice_begin, slice_end, t1, t2, k;
     tid = omp_get_thread_num ();
-    t1 = size / (num_thd);
-    t2 = size % (num_thd);
-    slice_begin = t1 * tid + (tid < t2? tid : t2);
-    slice_end = t1 * (tid+1) + ((tid+1) < t2? (tid+1) : t2);
+    if (tid < MAX_THREADS/2)
+    {
+    slice_begin = 32*tid;
+    slice_end = 32*tid +32;
     shared[tid] = 0;
     for (k = slice_begin; k < slice_end; ++k)
         shared[tid] += arr[k];
-    int64_t ret;
+    }
 #pragma omp barrier
 #pragma omp single
     {
-        int64_t tmp = shared[0];
-        int64_t cur;
+        int tmp = shared[0];
+        int cur;
         shared[0] =0;
-        for (k=1; k<=num_thd; k++)
+        for (k=1; k< MAX_THREADS/2; k++)
         {
             cur = shared[k];
             shared[k]=tmp+shared[k-1];
@@ -36,13 +37,15 @@ static int scan (int * shared, int *arr, int size)
         }
     }
 #pragma omp barrier
-    t1 = shared[tid];
-    for (k = slice_begin ; k < slice_end; ++k) {
-        int64_t tmp = arr[k];
-        arr[k] = t1;
-        t1 += tmp;
+    if (tid < MAX_THREADS/2)
+    {
+        t1 = shared[tid];
+        for (k = slice_begin ; k < slice_end; ++k) {
+            int tmp = arr[k];
+            arr[k] = t1;
+            t1 += tmp;
+        }
     }
-    return shared[num_thd];
 }
 
 void printarray(int arr[], int size)
@@ -52,7 +55,7 @@ void printarray(int arr[], int size)
     std::cout<<std::endl;
 }
 
-void  prefix_sum(int* shared, int size)
+void  prefix_sum(int* __restrict shared, int size)
 {
     int tmp = shared[0];
     int cur;
@@ -63,115 +66,121 @@ void  prefix_sum(int* shared, int size)
         shared[k]=tmp+shared[k-1];
         tmp = cur;
     }
-    //for(int i=1;i<size;i++)
-    //{
-    //    arr[i]+=arr[i-1];
-    //}
-
-    //int val=arr[size-1];
-    //for(int i=size-1;i>0;i--)
-    //{
-    //    arr[i]=arr[i-1];
-    //}
-    //arr[0]=0;
-    //return val;
 }
 
-void  radixsortkernel(int *arr, int *temp, int size, int bit_cur, int* bins)
+void  radixsortkernel(int * __restrict arr, int * __restrict temp, int size, int bit_cur, int* __restrict  bins)
 {
     for (int bit = bit_cur; bit < bit_cur + 4; bit++) 
     {
         int bin[2];
         if(bit % 2 == 0)
         {
-            bin[0] = 0;
+            bin[1] = 0;
             for (int i = 0; i < size; i++)
             {
                 if (((arr[i] >> bit ) & 1) == 0)
-                    bin[0]++;
+                    bin[1]++;
             }
 
-            bin[1] = size;
+            bin[0] = 0;
 
-            for (int i = (size - 1); i >= 0; i--) 
-                temp[--bin[((arr[i] >> bit) & 1)]] = arr[i];
+            int k = 0;
+            int l = 0;
+            for (int i = 0; i < size; i++)
+            {
+                int cur_bit = (arr[i] >> bit) & 1;
+                if (cur_bit == 0)
+                    temp[k++] = arr[i];
+                else
+                {
+                    temp[bin[1] +l] = arr[i];
+                    l++;
+                }
+            }
         }
         else
         {
-            bin[0] = 0;
+            bin[1] = 0;
             for (int i = 0; i < size; i++)
             {
                 if (((temp[i] >> bit ) & 1) == 0)
-                    bin[0]++;
+                    bin[1]++;
             }
 
-            bin[1] = size;
+            bin[0] = 0;
 
-            for (int i = (size - 1); i >= 0; i--) 
-                arr[--bin[(temp[i] >> bit) & 1]] = temp[i];
+            int k = 0;
+            int l = 0;
+            for (int i = 0; i < size; i++)
+            {
+                int cur_bit = (temp[i] >> bit) & 1;
+                if (cur_bit == 0)
+                    arr[k++] = temp[i];
+                else
+                {
+                    arr[bin[1] +l] = temp[i];
+                    l++;
+                }
+            }
         }
     }
     int last = 0;
     for (int i =0; i < size; i++)
         temp[i] = (arr[i] >> bit_cur) & 0xf;
 
-    for(int i = 0; i < 16; i++)
+    for(int i = 0; i < NUM_BINS; i++)
         bins[i] =0;
 
-    for(int i = 0; i < (size - 1); i++)
+    for(int i = 0; i < (size); i++)
     {
-        if (temp[i] != temp[i+1])
-        {
-            bins[temp[i]] = i + 1 - last;
-            last += bins[temp[i]];
-        }
+        bins[temp[i]]++;
+        //if (temp[i] != temp[i+1])
+        //{
+        //    bins[temp[i]] = i + 1 - last;
+        //    last += bins[temp[i]];
+        //}
     }
 
-    bins[temp[size - 1]] = (temp[size - 2] == temp[size - 1]) ? size - last : 1;
+    //bins[temp[size - 1]] = (temp[size - 2] == temp[size - 1]) ? size - last : 1;
 }
 
-void radixsort(int* arr, int* arr_odd, int l)
+void radixsort(int* __restrict arr, int* __restrict arr_odd, int l)
 {
-    int i;
-    int *bins, *buffer, *temp_bins;
+    int * __restrict bins, * __restrict buffer, * __restrict temp_bins;
     int bit = 0;
     int temp[l]; 
-    int max_threads=omp_get_max_threads();
-    bins=(int*)malloc(16*max_threads*sizeof(int));
-    temp_bins=(int*)malloc(16*max_threads*sizeof(int));
-    buffer=(int*)malloc(max_threads*sizeof(int));
-
-    int total;
+    bins=(int*)malloc(NUM_BINS*MAX_THREADS*sizeof(int));
+    temp_bins=(int*)malloc(NUM_BINS*MAX_THREADS*sizeof(int));
+    buffer=(int*)malloc((MAX_THREADS/2)*sizeof(int));
 
     for (bit =0; bit <32; bit+=4)
     {
 #pragma omp parallel
         {
-            int num_thd=omp_get_num_threads();
             int id=omp_get_thread_num();
-            int t1 = l / (num_thd);
-            int t2 = l % (num_thd);
+            int t1 = l / (MAX_THREADS);
+            int t2 = l % (MAX_THREADS);
             int slice_begin = t1 * id + (id < t2? id : t2);
             int slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
             //    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
             if (bit % 8 == 0)
-                radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*16]);
+                radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
             else
-                radixsortkernel(&arr_odd[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*16]);
+                radixsortkernel(&arr_odd[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
 #pragma omp barrier
-            if(id <16)
+            if(id <NUM_BINS)
             {
-                for(int j = id*256; j < (id*256 + 256); j++)
+                for(int j = id*MAX_THREADS; j < (id*MAX_THREADS + MAX_THREADS); j++)
                 {
-                    temp_bins[j] = bins[j/256 + (j%256) * 16];
+                    temp_bins[j] = bins[j/MAX_THREADS + (j%MAX_THREADS) * NUM_BINS];
                 }
             }
 #pragma omp barrier
-            scan(buffer,temp_bins,16*num_thd);
+            scan(buffer,temp_bins,NUM_BINS*MAX_THREADS);
             //#pragma omp single
             //            {
-            //                //printarray(bins,16);
-            //                prefix_sum(temp_bins,16*num_thd);
+            //                //printarray(bins,NUM_BINS);
+            //                prefix_sum(temp_bins,NUM_BINS*MAX_THREADS);
             //            }
             //#pragma omp barrier
 #pragma omp barrier
@@ -180,12 +189,12 @@ void radixsort(int* arr, int* arr_odd, int l)
             //{
             //    arr[j+bins[id]]=temp[slice_begin+j];
             //}
-            prefix_sum(&bins[id*16], 16);
+            prefix_sum(&bins[id*NUM_BINS], NUM_BINS);
 
             for(int j = 0;j < (slice_end - slice_begin); j++)
             {
-                int gindex = temp_bins[id + 256 * temp[slice_begin + j]];
-                int lindex = bins[id * 16 + temp[slice_begin + j]];
+                int gindex = temp_bins[id + MAX_THREADS * temp[slice_begin + j]];
+                int lindex = bins[id * NUM_BINS + temp[slice_begin + j]];
                 if (bit % 8 == 0)
                     arr_odd[ gindex + j - lindex] = arr[slice_begin + j];
                 else
