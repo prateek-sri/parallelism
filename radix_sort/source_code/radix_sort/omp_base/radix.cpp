@@ -72,10 +72,9 @@ void  radixsortkernel(int *arr, int *temp, int size, int bit_cur, int* bins)
 {
     for (int bit = bit_cur; bit < bit_cur + 4; bit++) 
     {
+	int bin[2];
         if(bit % 2 == 0)
         {
-            int bin[2];
-            int ret = 0;
             bin[0] = 0;
             for (int i = 0; i < size; i++)
             {
@@ -84,15 +83,12 @@ void  radixsortkernel(int *arr, int *temp, int size, int bit_cur, int* bins)
             }
 
             bin[1] = size;
-            ret = bin[0];
 
             for (int i = (size - 1); i >= 0; i--) 
                 temp[--bin[((arr[i] >> bit) & 1)]] = arr[i];
         }
         else
         {
-            int bin[2];
-            int ret = 0;
             bin[0] = 0;
             for (int i = 0; i < size; i++)
             {
@@ -101,44 +97,36 @@ void  radixsortkernel(int *arr, int *temp, int size, int bit_cur, int* bins)
             }
 
             bin[1] = size;
-            ret = bin[0];
 
             for (int i = (size - 1); i >= 0; i--) 
                 arr[--bin[(temp[i] >> bit) & 1]] = temp[i];
         }
     }
     int last = 0;
-    int i;
-    for (i =0; i < size; i++)
-        temp[i] = arr[i];
+    for (int i =0; i < size; i++)
+        temp[i] = (arr[i] >> bit_cur) & 0xf;
 
-    for(i =0; i < 16; i++)
+    for(int i = 0; i < 16; i++)
         bins[i] =0;
-    for(i = 0; i < (size - 1); i++)
+
+    for(int i = 0; i < (size - 1); i++)
     {
-        if ( ( (temp[i] >> bit_cur) & 0xf) != ( (temp[i+1] >> bit_cur) & 0xf) )
+        if (temp[i] != temp[i+1])
         {
-            bins[(temp[i] >> bit_cur) & 0xf] = i + 1 - last;
-            last += bins[(temp[i] >> bit_cur) & 0xf];
+            bins[temp[i]] = i + 1 - last;
+            last += bins[temp[i]];
         }
     }
 
-    if ( ( (temp[i-1] >> bit_cur) & 0xf) == ( (temp[i] >> bit_cur) & 0xf) )
-    {
-        bins[(temp[i]>>bit_cur) & 0xf] = i+1 - last;
-    }
-    else
-        bins[(temp[i]>>bit_cur) & 0xf]++;
+    bins[temp[size - 1]] = (temp[size - 2] == temp[size - 1]) ? size - last : 1;
 }
 
-void radixsort(int* arr, int l)
+void radixsort(int* arr, int* arr_odd, int l)
 {
     int i;
     int *bins, *buffer, *temp_bins;
-    int maxi = 0;
     int bit = 0;
-    int temp[l];
-    int value=0;
+    int temp[l]; 
     int max_threads=omp_get_max_threads();
     bins=(int*)malloc(16*max_threads*sizeof(int));
     temp_bins=(int*)malloc(16*max_threads*sizeof(int));
@@ -152,14 +140,15 @@ void radixsort(int* arr, int l)
         {
             int num_thd=omp_get_num_threads();
             int id=omp_get_thread_num();
-            int val,start_1;
             int t1 = l / (num_thd);
             int t2 = l % (num_thd);
             int slice_begin = t1 * id + (id < t2? id : t2);
             int slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
             //    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
-            radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*16]);
-            val = 0;
+            if (bit % 8 == 0)
+		radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*16]);
+            else
+		radixsortkernel(&arr_odd[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*16]);
 #pragma omp barrier
 #pragma omp single
             {
@@ -179,11 +168,14 @@ void radixsort(int* arr, int l)
             //}
             prefix_sum(&bins[id*16], 16);
 
-            for(int j=0;j<(slice_end-slice_begin);j++)
+            for(int j = 0;j < (slice_end - slice_begin); j++)
             {
-                int gindex = temp_bins[ id + 256 * ((temp[slice_begin + j]>>bit) &0xf)];
-                int lindex = bins[id * 16 + ( (temp[slice_begin + j]>>bit) & 0xf)];
-                arr[ gindex + j - lindex] = temp[slice_begin + j];
+                int gindex = temp_bins[id + 256 * temp[slice_begin + j]];
+                int lindex = bins[id * 16 + temp[slice_begin + j]];
+                if (bit % 8 == 0)
+		arr_odd[ gindex + j - lindex] = arr[slice_begin + j];
+                else
+		arr[ gindex + j - lindex] = arr_odd[slice_begin + j];
             }
         }
     }
@@ -221,14 +213,16 @@ void radixsort_CPU(int* arr, int l)
 int main(int argc, char** argv)
 {
     int array[SIZE];
+    int array_odd[SIZE];
     int size=SIZE;
     for(int i=0;i<size;i++)
     {
         array[i]=(size-i-1);
+        array_odd[i]=(size-i-1);
     }
     double serialTime = 0.0;
     double startTime = CycleTimer::currentSeconds();
-    radixsort(array, size);
+    radixsort(array,array_odd, size);
     //radixsort_CPU(array, size);
     double endTime = CycleTimer::currentSeconds();
     serialTime = 1000.0 * (endTime - startTime);
@@ -236,7 +230,7 @@ int main(int argc, char** argv)
     int flag=0;
     for(int i=0;i<size;i++)
     {
-        if(array[i]!=i)
+        if(array_odd[i]!=i)
         {
             flag=1;
             break;
