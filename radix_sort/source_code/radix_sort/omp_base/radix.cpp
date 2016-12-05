@@ -20,7 +20,7 @@ static int scan (int * shared, int *arr, int size)
     slice_end = t1 * (tid+1) + ((tid+1) < t2? (tid+1) : t2);
     shared[tid] = 0;
     for (k = slice_begin; k < slice_end; ++k)
-       shared[tid] += arr[k];
+        shared[tid] += arr[k];
     int64_t ret;
 #pragma omp barrier
 #pragma omp single
@@ -52,20 +52,29 @@ void printarray(int arr[], int size)
     std::cout<<std::endl;
 }
 
-int prefix_sum(int* arr, int size)
+void  prefix_sum(int* shared, int size)
 {
-    for(int i=1;i<size;i++)
+    int tmp = shared[0];
+    int cur;
+    shared[0] =0;
+    for (int k=1; k < size; k++)
     {
-        arr[i]+=arr[i-1];
+        cur = shared[k];
+        shared[k]=tmp+shared[k-1];
+        tmp = cur;
     }
+    //for(int i=1;i<size;i++)
+    //{
+    //    arr[i]+=arr[i-1];
+    //}
 
-    int val=arr[size-1];
-    for(int i=size-1;i>0;i--)
-    {
-        arr[i]=arr[i-1];
-    }
-    arr[0]=0;
-    return val;
+    //int val=arr[size-1];
+    //for(int i=size-1;i>0;i--)
+    //{
+    //    arr[i]=arr[i-1];
+    //}
+    //arr[0]=0;
+    //return val;
 }
 
 void  radixsortkernel(int *arr, int *temp, int size, int bit_cur, int* bins)
@@ -152,25 +161,28 @@ void radixsort(int* arr, int l)
         {
             int num_thd=omp_get_num_threads();
             int id=omp_get_thread_num();
-            int val,start_1;
             int t1 = l / (num_thd);
             int t2 = l % (num_thd);
             int slice_begin = t1 * id + (id < t2? id : t2);
             int slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
             //    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
             radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*16]);
-            val = 0;
 #pragma omp barrier
-#pragma omp single
+            if(id <16)
             {
-                //printarray(bins,16);
-                for(int j = 0; j < num_thd*16; j++)
+                for(int j = id*256; j < (id*256 + 256); j++)
                 {
-                    //    printf("%d,", (j/256 + (j%256) * 16));
                     temp_bins[j] = bins[j/256 + (j%256) * 16];
                 }
-                total = prefix_sum(temp_bins,16*num_thd);
             }
+#pragma omp barrier
+            scan(buffer,temp_bins,16*num_thd);
+            //#pragma omp single
+            //            {
+            //                //printarray(bins,16);
+            //                prefix_sum(temp_bins,16*num_thd);
+            //            }
+            //#pragma omp barrier
 #pragma omp barrier
             //start_1 = total + (slice_begin - bins[id]) - val;
             //for(int j=0;j<val;j++)
