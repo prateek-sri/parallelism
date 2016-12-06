@@ -3,17 +3,20 @@
 #include <stdlib.h>
 #include <cstring>
 #include <string>
+#include <cstdint>
 #include <iostream>
 #include <omp.h>
 #include "CycleTimer.h"
 
-#define SIZE 33554432
-#define MAX_THREADS 128
+#define SIZE  268435456 // limit to sum of values not exceeding INT_MAX in prefix sum
+#define MAX_THREADS 256
 #define NUM_BINS 16
-static void scan (int * __restrict shared, int * __restrict arr, int size)
+#define MODULO(a, b) ((a) & ((b) - 1)) // only power of 2 will work
+
+static void scan (uint32_t * __restrict shared, uint32_t * __restrict arr, uint32_t size)
 {
-    int num_thd, tid;
-    int slice_len,slice_begin, slice_end, t1, t2, k;
+    uint32_t num_thd, tid;
+    uint32_t slice_len,slice_begin, slice_end, t1, t2, k;
     tid = omp_get_thread_num ();
     if (tid < MAX_THREADS/2)
     {
@@ -26,8 +29,8 @@ static void scan (int * __restrict shared, int * __restrict arr, int size)
 #pragma omp barrier
 #pragma omp single
     {
-        int tmp = shared[0];
-        int cur;
+        uint32_t tmp = shared[0];
+        uint32_t cur;
         shared[0] =0;
         for (k=1; k< MAX_THREADS/2; k++)
         {
@@ -41,26 +44,26 @@ static void scan (int * __restrict shared, int * __restrict arr, int size)
     {
         t1 = shared[tid];
         for (k = slice_begin ; k < slice_end; ++k) {
-            int tmp = arr[k];
+            uint32_t tmp = arr[k];
             arr[k] = t1;
             t1 += tmp;
         }
     }
 }
 
-void printarray(int arr[], int size)
+void printarray(uint32_t arr[], uint32_t size)
 {
-    for(int i=0;i<size;i++)
+    for(uint32_t i=0;i<size;i++)
         std::cout<<arr[i]<<" ";
     std::cout<<std::endl;
 }
 
-void  prefix_sum(int* __restrict shared, int size)
+void  prefix_sum(uint32_t* __restrict shared, uint32_t size)
 {
-    int tmp = shared[0];
-    int cur;
+    uint32_t tmp = shared[0];
+    uint32_t cur;
     shared[0] =0;
-    for (int k=1; k < size; k++)
+    for (uint32_t k=1; k < size; k++)
     {
         cur = shared[k];
         shared[k]=tmp+shared[k-1];
@@ -68,15 +71,15 @@ void  prefix_sum(int* __restrict shared, int size)
     }
 }
 
-void  radixsortkernel(int * __restrict arr, int * __restrict temp, int size, int bit_cur, int* __restrict  bins)
+void  radixsortkernel(uint32_t * __restrict arr, uint32_t * __restrict temp, uint32_t size, uint32_t bit_cur, uint32_t* __restrict  bins)
 {
-    for (int bit = bit_cur; bit < bit_cur + 4; bit++) 
+    for (uint32_t bit = bit_cur; bit < bit_cur + 4; bit++) 
     {
-        int bin[2];
+        uint32_t bin[2];
         if(bit % 2 == 0)
         {
             bin[1] = 0;
-            for (int i = 0; i < size; i++)
+            for (uint32_t i = 0; i < size; i++)
             {
                 if (((arr[i] >> bit ) & 1) == 0)
                     bin[1]++;
@@ -84,11 +87,11 @@ void  radixsortkernel(int * __restrict arr, int * __restrict temp, int size, int
 
             bin[0] = 0;
 
-            int k = 0;
-            int l = 0;
-            for (int i = 0; i < size; i++)
+            uint32_t k = 0;
+            uint32_t l = 0;
+            for (uint32_t i = 0; i < size; i++)
             {
-                int cur_bit = (arr[i] >> bit) & 1;
+                uint32_t cur_bit = (arr[i] >> bit) & 1;
                 if (cur_bit == 0)
                     temp[k++] = arr[i];
                 else
@@ -101,7 +104,7 @@ void  radixsortkernel(int * __restrict arr, int * __restrict temp, int size, int
         else
         {
             bin[1] = 0;
-            for (int i = 0; i < size; i++)
+            for (uint32_t i = 0; i < size; i++)
             {
                 if (((temp[i] >> bit ) & 1) == 0)
                     bin[1]++;
@@ -109,11 +112,11 @@ void  radixsortkernel(int * __restrict arr, int * __restrict temp, int size, int
 
             bin[0] = 0;
 
-            int k = 0;
-            int l = 0;
-            for (int i = 0; i < size; i++)
+            uint32_t k = 0;
+            uint32_t l = 0;
+            for (uint32_t i = 0; i < size; i++)
             {
-                int cur_bit = (temp[i] >> bit) & 1;
+                uint32_t cur_bit = (temp[i] >> bit) & 1;
                 if (cur_bit == 0)
                     arr[k++] = temp[i];
                 else
@@ -124,14 +127,14 @@ void  radixsortkernel(int * __restrict arr, int * __restrict temp, int size, int
             }
         }
     }
-    int last = 0;
-    for (int i =0; i < size; i++)
+    uint32_t last = 0;
+    for (uint32_t i =0; i < size; i++)
         temp[i] = (arr[i] >> bit_cur) & 0xf;
 
-    for(int i = 0; i < NUM_BINS; i++)
+    for(uint32_t i = 0; i < NUM_BINS; i++)
         bins[i] =0;
 
-    for(int i = 0; i < (size); i++)
+    for(uint32_t i = 0; i < (size); i++)
     {
         bins[temp[i]]++;
         //if (temp[i] != temp[i+1])
@@ -144,35 +147,35 @@ void  radixsortkernel(int * __restrict arr, int * __restrict temp, int size, int
     //bins[temp[size - 1]] = (temp[size - 2] == temp[size - 1]) ? size - last : 1;
 }
 
-void radixsort(int* __restrict arr, int* __restrict arr_odd, int l)
+void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t l)
 {
-    int * __restrict bins, * __restrict buffer, * __restrict temp_bins;
-    int bit = 0;
-    int temp[l]; 
-    bins=(int*)malloc(NUM_BINS*MAX_THREADS*sizeof(int));
-    temp_bins=(int*)malloc(NUM_BINS*MAX_THREADS*sizeof(int));
-    buffer=(int*)malloc((MAX_THREADS/2)*sizeof(int));
+    uint32_t * __restrict bins, * __restrict buffer, * __restrict temp_bins;
+    uint32_t bit = 0;
+    uint32_t temp[l]; 
+    bins=(uint32_t*)malloc(NUM_BINS*MAX_THREADS*sizeof(uint32_t));
+    temp_bins=(uint32_t*)malloc(NUM_BINS*MAX_THREADS*sizeof(uint32_t));
+    buffer=(uint32_t*)malloc((MAX_THREADS/2)*sizeof(uint32_t));
 
     for (bit =0; bit <32; bit+=4)
     {
 #pragma omp parallel
         {
-            int id=omp_get_thread_num();
-            int t1 = l / (MAX_THREADS);
-            int t2 = l % (MAX_THREADS);
-            int slice_begin = t1 * id + (id < t2? id : t2);
-            int slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
+            uint32_t id=omp_get_thread_num();
+            uint32_t t1 = l / (MAX_THREADS);
+            uint32_t t2 = MODULO(l, (MAX_THREADS));
+            uint32_t slice_begin = t1 * id + (id < t2? id : t2);
+            uint32_t slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
             //    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
-            if (bit % 8 == 0)
+            if (MODULO(bit, 8) == 0)
                 radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
             else
                 radixsortkernel(&arr_odd[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
 #pragma omp barrier
             if(id <NUM_BINS)
             {
-                for(int j = id*MAX_THREADS; j < (id*MAX_THREADS + MAX_THREADS); j++)
+                for(uint32_t j = id*MAX_THREADS; j < (id*MAX_THREADS + MAX_THREADS); j++)
                 {
-                    temp_bins[j] = bins[j/MAX_THREADS + (j%MAX_THREADS) * NUM_BINS];
+                    temp_bins[j] = bins[j/MAX_THREADS + (MODULO(j, MAX_THREADS)) * NUM_BINS];
                 }
             }
 #pragma omp barrier
@@ -185,17 +188,17 @@ void radixsort(int* __restrict arr, int* __restrict arr_odd, int l)
             //#pragma omp barrier
 #pragma omp barrier
             //start_1 = total + (slice_begin - bins[id]) - val;
-            //for(int j=0;j<val;j++)
+            //for(uint32_t j=0;j<val;j++)
             //{
             //    arr[j+bins[id]]=temp[slice_begin+j];
             //}
             prefix_sum(&bins[id*NUM_BINS], NUM_BINS);
 
-            for(int j = 0;j < (slice_end - slice_begin); j++)
+            for(uint32_t j = 0;j < (slice_end - slice_begin); j++)
             {
-                int gindex = temp_bins[id + MAX_THREADS * temp[slice_begin + j]];
-                int lindex = bins[id * NUM_BINS + temp[slice_begin + j]];
-                if (bit % 8 == 0)
+                uint32_t gindex = temp_bins[id + MAX_THREADS * temp[slice_begin + j]];
+                uint32_t lindex = bins[id * NUM_BINS + temp[slice_begin + j]];
+                if (MODULO(bit, 8) == 0)
                     arr_odd[ gindex + j - lindex] = arr[slice_begin + j];
                 else
                     arr[ gindex + j - lindex] = arr_odd[slice_begin + j];
@@ -204,11 +207,11 @@ void radixsort(int* __restrict arr, int* __restrict arr_odd, int l)
     }
 }
 
-void radixsort_CPU(int* arr, int l)
+void radixsort_CPU(uint32_t* arr, uint32_t l)
 {
-    int i, max = 0;
-    int bit = 1;
-    int bin[l], temp[l];
+    uint32_t i, max = 0;
+    uint32_t bit = 1;
+    uint32_t bin[l], temp[l];
 
     for (i = 0; i < l; i++)
     {
@@ -233,12 +236,12 @@ void radixsort_CPU(int* arr, int l)
     }
 }
 
-int main(int argc, char** argv)
+uint32_t main(uint32_t argc, char** argv)
 {
-    int array[SIZE];
-    int array_odd[SIZE];
-    int size=SIZE;
-    for(int i=0;i<size;i++)
+    uint32_t array[SIZE];
+    uint32_t array_odd[SIZE];
+    uint32_t size=SIZE;
+    for(uint32_t i=0;i<size;i++)
     {
         array[i]=(size-i-1);
         array_odd[i]=(size-i-1);
@@ -250,8 +253,8 @@ int main(int argc, char** argv)
     double endTime = CycleTimer::currentSeconds();
     serialTime = 1000.0 * (endTime - startTime);
     std::cout<<"Time : "<< serialTime <<" ms" << std::endl;
-    int flag=0;
-    for(int i=0;i<size;i++)
+    uint32_t flag=0;
+    for(uint32_t i=0;i<size;i++)
     {
         if(array_odd[i]!=i)
         {
@@ -259,7 +262,7 @@ int main(int argc, char** argv)
             break;
         }
     }
-    //printarray(array, size);
+//   printarray(array_odd, 10);
     if(flag==1)
     {
         std::cout<<"Fail:\n";
