@@ -13,6 +13,17 @@
 #define NUM_BINS 16
 #define MODULO(a, b) ((a) & ((b) - 1)) // only power of 2 will work
 
+static inline int nextPow2_2elements(int n)                                                                                               
+{                                                                                                                                         
+    n--;                                                                                                                                  
+    n |= n >> 1;                                                                                                                          
+    n |= n >> 2;                                                                                                                          
+    n |= n >> 4;                                                                                                                          
+    n |= n >> 8;                                                                                                                          
+    n |= n >> 16;                                                                                                                         
+    n++;                                                                                                                                  
+    return n;                                                                                                                             
+} 
 static void scan (uint32_t * __restrict shared, uint32_t * __restrict arr, uint32_t size)
 {
     uint32_t num_thd, tid;
@@ -20,11 +31,11 @@ static void scan (uint32_t * __restrict shared, uint32_t * __restrict arr, uint3
     tid = omp_get_thread_num ();
     if (tid < MAX_THREADS/2)
     {
-    slice_begin = 32*tid;
-    slice_end = 32*tid +32;
-    shared[tid] = 0;
-    for (k = slice_begin; k < slice_end; ++k)
-        shared[tid] += arr[k];
+        slice_begin = 32*tid;
+        slice_end = 32*tid +32;
+        shared[tid] = 0;
+        for (k = slice_begin; k < slice_end; ++k)
+            shared[tid] += arr[k];
     }
 #pragma omp barrier
 #pragma omp single
@@ -158,27 +169,40 @@ void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t 
 
     for (bit =0; bit <32; bit+=4)
     {
-#pragma omp parallel
+        //#pragma omp parallel
         {
-            uint32_t id=omp_get_thread_num();
-            uint32_t t1 = l / (MAX_THREADS);
-            uint32_t t2 = MODULO(l, (MAX_THREADS));
-            uint32_t slice_begin = t1 * id + (id < t2? id : t2);
-            uint32_t slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
-            //    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
-            if (MODULO(bit, 8) == 0)
-                radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
-            else
-                radixsortkernel(&arr_odd[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
-#pragma omp barrier
-            if(id <NUM_BINS)
+            uint32_t size = nextPow2_2elements(l)/256;
+#pragma omp parallel for
+            for (int i = 0; i < l; i+=size)
             {
-                for(uint32_t j = id*MAX_THREADS; j < (id*MAX_THREADS + MAX_THREADS); j++)
+
+                if (MODULO(bit, 8) == 0)
+                    radixsortkernel(&arr[i], &temp[i], (l-i)>size?size:l-i, bit, &bins[(i/size)*NUM_BINS]);
+                else
+                    radixsortkernel(&arr_odd[i], &temp[i], (l-i)>size?size:l-i, bit, &bins[(i/size)*NUM_BINS]);
+
+            }
+            //            uint32_t id=omp_get_thread_num();
+            //            uint32_t t1 = l / (MAX_THREADS);
+            //            uint32_t t2 = MODULO(l, (MAX_THREADS));
+            //            uint32_t slice_begin = t1 * id + (id < t2? id : t2);
+            //            uint32_t slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
+            ////    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
+            //if (MODULO(bit, 8) == 0)
+            //    radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
+            //else
+            //    radixsortkernel(&arr_odd[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
+            //#pragma omp barrier
+#pragma omp parallel for
+            for (int i = 0; i < NUM_BINS; i++)
+            {
+                for(uint32_t j = i*MAX_THREADS; j < (i*MAX_THREADS + MAX_THREADS); j++)
                 {
                     temp_bins[j] = bins[j/MAX_THREADS + (MODULO(j, MAX_THREADS)) * NUM_BINS];
                 }
             }
-#pragma omp barrier
+            //#pragma omp barrier
+#pragma omp parallel
             scan(buffer,temp_bins,NUM_BINS*MAX_THREADS);
             //#pragma omp single
             //            {
@@ -186,22 +210,26 @@ void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t 
             //                prefix_sum(temp_bins,NUM_BINS*MAX_THREADS);
             //            }
             //#pragma omp barrier
-#pragma omp barrier
+            //#pragma omp barrier
             //start_1 = total + (slice_begin - bins[id]) - val;
             //for(uint32_t j=0;j<val;j++)
             //{
             //    arr[j+bins[id]]=temp[slice_begin+j];
             //}
-            prefix_sum(&bins[id*NUM_BINS], NUM_BINS);
 
-            for(uint32_t j = 0;j < (slice_end - slice_begin); j++)
+#pragma omp parallel for
+            for (int i = 0; i < l; i+=size)
             {
-                uint32_t gindex = temp_bins[id + MAX_THREADS * temp[slice_begin + j]];
-                uint32_t lindex = bins[id * NUM_BINS + temp[slice_begin + j]];
-                if (MODULO(bit, 8) == 0)
-                    arr_odd[ gindex + j - lindex] = arr[slice_begin + j];
-                else
-                    arr[ gindex + j - lindex] = arr_odd[slice_begin + j];
+                prefix_sum(&bins[(i/size)*NUM_BINS], NUM_BINS);
+                for(uint32_t j = i; j < ((i+size)>l?l:i+size); j++)
+                {
+                    uint32_t gindex = temp_bins[(i/size) + MAX_THREADS * temp[j]];
+                    uint32_t lindex = bins[(i/size) * NUM_BINS + temp[j]];
+                    if (MODULO(bit, 8) == 0)
+                        arr_odd[ gindex + j -i - lindex] = arr[j];
+                    else
+                        arr[ gindex + j - i - lindex] = arr_odd[j];
+                }
             }
         }
     }
@@ -262,7 +290,7 @@ uint32_t main(uint32_t argc, char** argv)
             break;
         }
     }
-//   printarray(array_odd, 10);
+    //   printarray(array_odd, 10);
     if(flag==1)
     {
         std::cout<<"Fail:\n";
