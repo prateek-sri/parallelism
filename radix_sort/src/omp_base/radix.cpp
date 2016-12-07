@@ -150,7 +150,17 @@ void  radixsortkernel(uint32_t * __restrict arr, uint32_t * __restrict temp, uin
 
     //bins[temp[size - 1]] = (temp[size - 2] == temp[size - 1]) ? size - last : 1;
 }
-
+unsigned int log2 (unsigned int v)
+{
+static const unsigned int b[] = {0xAAAAAAAA, 0xCCCCCCCC, 0xF0F0F0F0, 
+                                     0xFF00FF00, 0xFFFF0000};
+register unsigned int r = (v & b[0]) != 0;
+for (int i = 4; i > 0; i--) 
+{
+      r |= ((v & b[i]) != 0) << i;
+}
+return r;
+}
 void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t l)
 {
     uint32_t * __restrict bins, * __restrict buffer, * __restrict temp_bins;
@@ -160,31 +170,22 @@ void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t 
     temp_bins=(uint32_t*)malloc(NUM_BINS*MAX_THREADS*sizeof(uint32_t));
     buffer=(uint32_t*)malloc((MAX_THREADS)*sizeof(uint32_t));
 
+            uint32_t size = nextPow2_2elements(l)/256;
+            int shf = log2(size);
     for (bit =0; bit <32; bit+=4)
     {
         //#pragma omp parallel
         {
-            uint32_t size = nextPow2_2elements(l)/256;
 #pragma omp parallel for
-            for (int i = 0; i < l; i+=size)
+            for (int i = 0; i < l; i+=size )
             {
-
+               int k = i >> shf; 
                 if (MODULO(bit, 8) == 0)
-                    radixsortkernel(&arr[i], &temp[i], (l-i)>size?size:l-i, bit, &bins[(i/size)*NUM_BINS]);
+                    radixsortkernel(&arr[i], &temp[i], (l-i)>size?size:l-i, bit, &bins[(k)*NUM_BINS]);
                 else
-                    radixsortkernel(&arr_odd[i], &temp[i], (l-i)>size?size:l-i, bit, &bins[(i/size)*NUM_BINS]);
+                    radixsortkernel(&arr_odd[i], &temp[i], (l-i)>size?size:l-i, bit, &bins[(k)*NUM_BINS]);
 
             }
-            //            uint32_t id=omp_get_thread_num();
-            //            uint32_t t1 = l / (MAX_THREADS);
-            //            uint32_t t2 = MODULO(l, (MAX_THREADS));
-            //            uint32_t slice_begin = t1 * id + (id < t2? id : t2);
-            //            uint32_t slice_end = t1 * (id+1) + ((id+1) < t2? (id+1) : t2);
-            ////    std::cout<<slice_begin<<" - "<<slice_end<<std::endl;
-            //if (MODULO(bit, 8) == 0)
-            //    radixsortkernel(&arr[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
-            //else
-            //    radixsortkernel(&arr_odd[slice_begin], &temp[slice_begin], slice_end - slice_begin, bit, &bins[id*NUM_BINS]);
             //#pragma omp barrier
 #pragma omp parallel for
             for (int i = 0; i < NUM_BINS; i++)
@@ -202,21 +203,16 @@ void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t 
             //                prefix_sum(temp_bins,NUM_BINS*MAX_THREADS);
             //            }
             //#pragma omp barrier
-            //#pragma omp barrier
-            //start_1 = total + (slice_begin - bins[id]) - val;
-            //for(uint32_t j=0;j<val;j++)
-            //{
-            //    arr[j+bins[id]]=temp[slice_begin+j];
-            //}
 
 #pragma omp parallel for
             for (int i = 0; i < l; i+=size)
             {
-                prefix_sum(&bins[(i/size)*NUM_BINS], NUM_BINS);
+                int k = i >> shf; 
+                prefix_sum(&bins[(k)*NUM_BINS], NUM_BINS);
                 for(uint32_t j = i; j < ((i+size)>l?l:i+size); j++)
                 {
-                    uint32_t gindex = temp_bins[(i/size) + MAX_THREADS * temp[j]];
-                    uint32_t lindex = bins[(i/size) * NUM_BINS + temp[j]];
+                    uint32_t gindex = temp_bins[(k) + MAX_THREADS * temp[j]];
+                    uint32_t lindex = bins[(k) * NUM_BINS + temp[j]];
                     if (MODULO(bit, 8) == 0)
                         arr_odd[ gindex + j -i - lindex] = arr[j];
                     else
