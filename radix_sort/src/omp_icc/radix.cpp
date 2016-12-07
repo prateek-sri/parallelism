@@ -257,10 +257,12 @@ uint32_t main(uint32_t argc, char** argv)
     uint32_t array[SIZE];
     uint32_t array_odd[SIZE];
     uint32_t size=SIZE;
+    srand(time(NULL));
+#pragma omp parallel for
     for(uint32_t i=0;i<size;i++)
     {
-        array[i]=(size-i-1);
-        array_odd[i]=(size-i-1);
+        array[i]=rand()%400000;
+        array_odd[i]=array[i];
     }
     double serialTime = 0.0;
     double startTime = CycleTimer::currentSeconds();
@@ -270,11 +272,12 @@ uint32_t main(uint32_t argc, char** argv)
     serialTime = 1000.0 * (endTime - startTime);
     std::cout<<"Time : "<< serialTime <<" ms" << std::endl;
     uint32_t flag=0;
-    for(uint32_t i=0;i<size;i++)
+    for(uint32_t i=0;i<size-1;i++)
     {
-        if(array_odd[i]!=i)
+        if(array_odd[i]>array_odd[i+1])
         {
             flag=1;
+            printarray(array_odd+i-1, 3);
             break;
         }
     }
