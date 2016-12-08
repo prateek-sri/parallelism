@@ -102,8 +102,13 @@ int main(int argc, char** argv) {
     cudaMemset(d_Anext,0,size*sizeof(float));
 
     //memory copy
+    printf("Old Value: %f\n",h_A0[0]);
     cudaMemcpy(d_A0, h_A0, size*sizeof(float), cudaMemcpyHostToDevice);
+    cudaThreadSynchronize();
     cudaMemcpy(d_Anext, d_A0, size*sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaMemcpy(h_Anext, d_Anext,size*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaThreadSynchronize();
+    printf("Old Value: %f\n",h_Anext[0]);
 
     cudaThreadSynchronize();
     pb_SwitchToTimer(&timers, pb_TimerID_COMPUTE);
@@ -145,10 +150,10 @@ int main(int argc, char** argv) {
     }
     pb_SwitchToTimer(&timers, pb_TimerID_COMPUTE);
 
+    printf("Final Value: %f\n",h_Anext[0]);
     free (h_A0);
     free (h_Anext);
     pb_SwitchToTimer(&timers, pb_TimerID_NONE);
-
     pb_PrintTimerSet(&timers);
     pb_FreeParameters(parameters);
 
