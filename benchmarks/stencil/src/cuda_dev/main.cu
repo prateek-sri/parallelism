@@ -116,20 +116,19 @@ int main(int argc, char** argv) {
 
     //main execution
     pb_SwitchToTimer(&timers, pb_TimerID_KERNEL);
-    //for(int t=0;t<iteration;t++)
-        block2D_reg_tiling<<<grid, block>>>(c0,c1, d_A0, d_Anext, nx, ny,  nz, iteration);
-        /*
+    for(int t=0;t<iteration;t++)
+    {
+        block2D_reg_tiling<<<grid, block,4*tx*ty>>>(c0,c1, d_A0, d_Anext, nx, ny,  nz);
         float *d_temp=d_A0;
         d_A0 = d_Anext;
         d_Anext = d_temp;
-        */
 
+    }
     CUERR // check and clear any existing errors
-    /*
-    float *d_temp=d_A0;
+        float *d_temp=d_A0;
     d_A0 = d_Anext;
     d_Anext = d_temp;
-    */
+
 
 
     cudaThreadSynchronize();
