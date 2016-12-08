@@ -29,47 +29,38 @@ __global__ void block2D_reg_tiling(float c0,float c1,float *current,float *next,
     __syncthreads();
     for(int k=1;k<nz-1;k++)
     {
+        A3[id]=current[Index3D (nx, ny, i, j, k+1)] ;
         if( i>0 && j>0 &&(i<nx-1) &&(j<ny-1) )
         {
-            A3[id]=current[Index3D (nx, ny, i, j, k+1)] ;
             __syncthreads();
             Anew[id]=0;
             if(threadIdx.x==0)
                 Anew[id]+=current[Index3D (nx, ny, i - 1, j, k)];
             else
-                Anew[id]+=A2[id-1];
+                Anew[id]+=A2[id-1];//current[Index3D (nx, ny, i - 1, j, k)];
 
             if((threadIdx.x==blockDim.x-1)||(i==nx-2))
                 Anew[id]+=current[Index3D (nx, ny, i + 1, j, k)];
             else
-                Anew[id]+=A2[id+1];
+                Anew[id]+=A2[id+1];//current[Index3D (nx, ny, i + 1, j, k)];
 
             if(threadIdx.y==0)
                 Anew[id]+=current[Index3D (nx, ny, i , j - 1, k)];
             else
-                Anew[id]+=A2[id-tx];
+                Anew[id]+=A2[id-tx];//current[Index3D (nx, ny, i , j - 1, k)];
 
             if((threadIdx.y==blockDim.y-1)||(j==ny-2))
                 Anew[id]+=current[Index3D (nx, ny, i , j + 1, k)];
             else
-                Anew[id]+=A2[id+tx];
+                Anew[id]+=A2[id+tx];//current[Index3D (nx, ny, i , j + 1, k)];
 
-            Anew[id] = c1*(A1[id] + A3[id] + Anew[id])-(c0*A2[id]);
-            next[Index3D (nx, ny, i, j, k)]=Anew[id]; 
-            if((i==3)&&(j==128))
-            {
-                printf("Updating %d and %d with %f\n",i,j,Anew[id]);
-            }
-            __syncthreads();
-            temp=A1;
-            __syncthreads();
-            A1=A2;
-            __syncthreads();
-            A2=A3;
-            __syncthreads();
-            A3=temp;
-            __syncthreads();
+            next[Index3D (nx, ny, i, j, k)]=c1*(A1[id] + A3[id] + Anew[id])-(c0*A2[id]);
+
         }
+        temp=A1;
+        A1=A2;
+        A2=A3;
+        A3=temp;
     }
 
 }
