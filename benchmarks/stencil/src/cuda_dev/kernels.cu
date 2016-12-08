@@ -23,14 +23,13 @@ __global__ void block2D_reg_tiling(float c0,float c1,float *current,float *next,
     int i = blockIdx.x*blockDim.x+threadIdx.x;
     int j = blockIdx.y*blockDim.y+threadIdx.y;
 
-    if( i>0 && j>0 &&(i<nx-1) &&(j<ny-1) )
+    int id=threadIdx.x+tx*threadIdx.y;
+    A1[id]=current[Index3D(nx, ny, i, j, 0)] ;
+    A2[id]=current[Index3D(nx, ny, i, j, 1)] ;
+    __syncthreads();
+    for(int k=1;k<nz-1;k++)
     {
-        int id=threadIdx.x+tx*threadIdx.y;
-        __syncthreads();
-        A1[id]=current[Index3D(nx, ny, i, j, 0)] ;
-        A2[id]=current[Index3D(nx, ny, i, j, 1)] ;
-        __syncthreads();
-        for(int k=1;k<nz-1;k++)
+        if( i>0 && j>0 &&(i<nx-1) &&(j<ny-1) )
         {
             A3[id]=current[Index3D (nx, ny, i, j, k+1)] ;
             __syncthreads();
@@ -40,7 +39,7 @@ __global__ void block2D_reg_tiling(float c0,float c1,float *current,float *next,
             else
                 Anew[id]+=A2[id-1];
 
-            if(threadIdx.x==blockDim.x-1)
+            if((threadIdx.x==blockDim.x-1)||(i==nx-2))
                 Anew[id]+=current[Index3D (nx, ny, i + 1, j, k)];
             else
                 Anew[id]+=A2[id+1];
@@ -49,15 +48,15 @@ __global__ void block2D_reg_tiling(float c0,float c1,float *current,float *next,
                 Anew[id]+=current[Index3D (nx, ny, i , j - 1, k)];
             else
                 Anew[id]+=A2[id-tx];
-            
-            if(threadIdx.y==blockDim.y-1)
+
+            if((threadIdx.y==blockDim.y-1)||(j==ny-2))
                 Anew[id]+=current[Index3D (nx, ny, i , j + 1, k)];
             else
                 Anew[id]+=A2[id+tx];
 
             Anew[id] = c1*(A1[id] + A3[id] + Anew[id])-(c0*A2[id]);
             next[Index3D (nx, ny, i, j, k)]=Anew[id]; 
-            if((i==0)&&(j==0))
+            if((i==3)&&(j==128))
             {
                 printf("Updating %d and %d with %f\n",i,j,Anew[id]);
             }

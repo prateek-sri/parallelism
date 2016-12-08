@@ -102,20 +102,15 @@ int main(int argc, char** argv) {
     cudaMemset(d_Anext,0,size*sizeof(float));
 
     //memory copy
-    printf("Old Value: %f\n",h_A0[0]);
     cudaMemcpy(d_A0, h_A0, size*sizeof(float), cudaMemcpyHostToDevice);
-    cudaThreadSynchronize();
     cudaMemcpy(d_Anext, d_A0, size*sizeof(float), cudaMemcpyDeviceToDevice);
-    cudaMemcpy(h_Anext, d_Anext,size*sizeof(float), cudaMemcpyDeviceToHost);
-    cudaThreadSynchronize();
-    printf("Old Value: %f\n",h_Anext[0]);
 
     cudaThreadSynchronize();
     pb_SwitchToTimer(&timers, pb_TimerID_COMPUTE);
 
     //only use tx-by-ty threads
-    int tx=32;
-    int ty=32;
+    int tx=16;
+    int ty=16;
     dim3 block (tx, ty, 1);
     dim3 grid ((nx+tx-1)/tx, (ny+ty-1)/ty,1);
 
@@ -123,7 +118,7 @@ int main(int argc, char** argv) {
     pb_SwitchToTimer(&timers, pb_TimerID_KERNEL);
     for(int t=0;t<iteration;t++)
     {
-        block2D_reg_tiling<<<grid, block,4*tx*ty>>>(c0,c1, d_A0, d_Anext, nx, ny,  nz);
+        block2D_reg_tiling<<<grid, block,4*tx*ty*sizeof(float)>>>(c0,c1, d_A0, d_Anext, nx, ny,  nz);
         float *d_temp=d_A0;
         d_A0 = d_Anext;
         d_Anext = d_temp;
@@ -150,10 +145,10 @@ int main(int argc, char** argv) {
     }
     pb_SwitchToTimer(&timers, pb_TimerID_COMPUTE);
 
-    printf("Final Value: %f\n",h_Anext[0]);
     free (h_A0);
     free (h_Anext);
     pb_SwitchToTimer(&timers, pb_TimerID_NONE);
+
     pb_PrintTimerSet(&timers);
     pb_FreeParameters(parameters);
 
