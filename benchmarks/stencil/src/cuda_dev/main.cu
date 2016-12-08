@@ -109,8 +109,8 @@ int main(int argc, char** argv) {
     pb_SwitchToTimer(&timers, pb_TimerID_COMPUTE);
 
     //only use tx-by-ty threads
-    int tx=32;
-    int ty=32;
+    int tx=16;
+    int ty=16;
     dim3 block (tx, ty, 1);
     dim3 grid ((nx+tx-1)/tx, (ny+ty-1)/ty,1);
 
@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
     pb_SwitchToTimer(&timers, pb_TimerID_KERNEL);
     for(int t=0;t<iteration;t++)
     {
-        block2D_reg_tiling<<<grid, block,4*tx*ty>>>(c0,c1, d_A0, d_Anext, nx, ny,  nz);
+        block2D_reg_tiling<<<grid, block,4*tx*ty*sizeof(float)>>>(c0,c1, d_A0, d_Anext, nx, ny,  nz);
         float *d_temp=d_A0;
         d_A0 = d_Anext;
         d_Anext = d_temp;
