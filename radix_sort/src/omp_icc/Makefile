@@ -7,7 +7,7 @@ all:
 	$(CC) $(CCFLAGS) radix.cpp -lm -o bin/radix
 	./bin/radix
 test:
-	echo Running radix sort with $(OMP_NUM_THREADS) threads
+	@echo Running radix sort with $(OMP_NUM_THREADS) threads
 	./bin/radix
 clean:
 	rm -rf bin
