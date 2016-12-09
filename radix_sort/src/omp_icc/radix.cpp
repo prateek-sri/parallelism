@@ -8,11 +8,11 @@
 #include <omp.h>
 #include "CycleTimer.h"
 
-#define SIZE  268435456 // limit to sum of values not exceeding INT_MAX in prefix sum
+#define SIZE  268435456//16777216//65536 // limit to sum of values not exceeding INT_MAX in prefix sum
 #define MAX_THREADS 256
 #define NUM_BINS 16
 #define MODULO(a, b) ((a) & ((b) - 1)) // only power of 2 will work
-#define BLOCK_SIZE 16384
+#define BLOCK_SIZE 2048
 #define PREFIX_STEP 256
 #define PREFIX_STEP_LOG 8
 
@@ -27,11 +27,22 @@ static inline int nextPow2_2elements(int n)
     n++;                                                                                                                                  
     return n;                                                                                                                             
 } 
+unsigned int log2 (unsigned int v)
+{
+    static const unsigned int b[] = {0xAAAAAAAA, 0xCCCCCCCC, 0xF0F0F0F0, 
+        0xFF00FF00, 0xFFFF0000};
+    register unsigned int r = (v & b[0]) != 0;
+    for (int i = 4; i > 0; i--) 
+    {
+        r |= ((v & b[i]) != 0) << i;
+    }
+    return r;
+}
 static void  prefix_sum(uint32_t* __restrict shared, uint32_t size)
 {
     uint32_t tmp = shared[0];
     uint32_t cur;
-    shared[0] =0;
+    shared[0] = 0;
     for (uint32_t k=1; k < size; k++)
     {
         cur = shared[k];
@@ -63,183 +74,100 @@ void printarray(uint32_t arr[], uint32_t size)
 
 void  radixsortkernel(uint32_t * __restrict arr, uint32_t * __restrict arr_4bit, uint32_t size, uint32_t bit_cur, uint32_t* __restrict  bins)
 {
-    uint32_t num_iter =  (size + BLOCK_SIZE - 1)/BLOCK_SIZE;
-    
-    uint32_t **bins_per_block;
-    uint32_t *bins_sum =  (uint32_t*) malloc (sizeof(uint32_t) * num_iter * NUM_BINS);
-
-    if (bins_sum == NULL)
+    for (uint32_t bit = bit_cur; bit < bit_cur + 4; bit++) 
     {
-        printf("Out of memory");
-        exit(1);
-    }
-    bins_per_block = (uint32_t**)malloc(sizeof(uint32_t*)*num_iter);
-
-    if (bins_per_block == NULL)
-    {
-        printf("Out of memory");
-        exit(1);
-    }
-    for (uint32_t iter = 0; iter < num_iter; iter++)
-    {
-        bins_per_block[iter] = (uint32_t *) malloc (sizeof (uint32_t) * NUM_BINS);
-        if (bins_per_block[iter] == NULL)
+        uint32_t k = 0, l = 0;
+        if(bit % 2 == 0)
         {
-            printf("Out of memory");
-            exit(1);
-        }
-        for (uint32_t bit = bit_cur; bit < bit_cur + 4; bit++) 
-        {
-            uint32_t bin[2];
-            if(bit % 2 == 0)
-            {
-                bin[1] = 0;
-                for (uint32_t i = iter * BLOCK_SIZE; i < ((( (iter+1) * BLOCK_SIZE) < size) ? (iter + 1) * BLOCK_SIZE : size); i++)
-                { 
-                    if (((arr[i] >> bit ) & 1) == 0)
-                        bin[1]++;
-                }
-
-                bin[0] = 0;
-
-                uint32_t k = iter * BLOCK_SIZE;
-                uint32_t l = iter * BLOCK_SIZE;
-                for (uint32_t i = iter * BLOCK_SIZE; i < ((( (iter+1) * BLOCK_SIZE) < size) ? (iter + 1) * BLOCK_SIZE : size); i++)
-                {
-                    uint32_t cur_bit = (arr[i] >> bit) & 1;
-                    if (cur_bit == 0)
-                        arr_4bit[k++] = arr[i];
-                    else
-                    {
-                        arr_4bit[bin[1] +l] = arr[i];
-                        l++;
-                    }
-                }
+            for (uint32_t i = 0; i < size; i++)
+            { 
+                if (((arr[i] >> bit ) & 1) == 0)
+                    l++;//bin[1]++;
             }
-            else
+
+            for (uint32_t i = 0; i < size; i++)
             {
-                bin[1] = 0;
-                for (uint32_t i = iter * BLOCK_SIZE; i < ((( (iter+1) * BLOCK_SIZE) < size) ? (iter + 1) * BLOCK_SIZE : size); i++)
-                {
-                    if (((arr_4bit[i] >> bit ) & 1) == 0)
-                        bin[1]++;
-                }
-
-                bin[0] = 0;
-
-                uint32_t k = iter * BLOCK_SIZE;
-                uint32_t l = iter * BLOCK_SIZE;
-                for (uint32_t i = iter * BLOCK_SIZE; i < ((( (iter+1) * BLOCK_SIZE) < size) ? (iter + 1) * BLOCK_SIZE : size); i++)
-                {
-                    uint32_t cur_bit = (arr_4bit[i] >> bit) & 1;
-                    if (cur_bit == 0)
-                        arr[k++] = arr_4bit[i];
-                    else
-                    {
-                        arr[bin[1] +l] = arr_4bit[i];
-                        l++;
-                    }
-                }
+                uint32_t cur_bit = (arr[i] >> bit) & 1;
+                (cur_bit == 0) ? arr_4bit[k++] = arr[i] : arr_4bit[l++] = arr[i];
             }
         }
-
-        for(uint32_t i = 0; i < NUM_BINS; i++)
-            bins_per_block[iter][i] =0;
-
-        for (uint32_t i = iter * BLOCK_SIZE; i < ((( (iter+1) * BLOCK_SIZE) < size) ? (iter + 1) * BLOCK_SIZE : size); i++)
+        else
         {
-            (bins_per_block[iter][(arr[i] >> bit_cur) & 0xf])++;
+            for (uint32_t i = 0; i < size; i++)
+            {
+                if (((arr_4bit[i] >> bit ) & 1) == 0)
+                    l++;
+            }
+
+            for (uint32_t i = 0; i < size; i++)
+            {
+                uint32_t cur_bit = (arr_4bit[i] >> bit) & 1;
+                (cur_bit == 0) ? arr[k++] = arr_4bit[i] : arr[l++] = arr_4bit[i];
+            }
         }
     }
 
-    for (int i = 0; i < NUM_BINS; i++)
-    {
+    for (uint32_t i = 0; i < size; i++)
+        arr_4bit[i] = arr[i];
+
+    for(uint32_t i = 0; i < NUM_BINS; i++)
         bins[i] = 0;
-        for(uint32_t j = 0; j < num_iter; j++)
-        {
-            bins[i] += bins_per_block[j][i];
-            bins_sum[i * num_iter + j] = bins_per_block[j][i];
-        }
-    }
-    prefix_sum(bins_sum,NUM_BINS*num_iter);
 
+    for (uint32_t i = 0; i < size; i++)
+        (bins[(arr[i] >> bit_cur) & 0xf])++;
+}
 
-    for (int i = 0; i < num_iter; i++)
-    {
-        prefix_sum(bins_per_block[i], NUM_BINS);
-        for (uint32_t j = i * BLOCK_SIZE; j < ((( (i+1) * BLOCK_SIZE) < size) ? (i + 1) * BLOCK_SIZE : size); j++)
-        {
-            uint32_t gindex = bins_sum[i + num_iter * ((arr[j]>>bit_cur)&0xf)];
-            uint32_t lindex = bins_per_block[i][((arr[j]>>bit_cur)&0xf)];
-            arr_4bit[ gindex + j -i*BLOCK_SIZE - lindex] = arr[j];
-        }
-    }
-}
-unsigned int log2 (unsigned int v)
-{
-    static const unsigned int b[] = {0xAAAAAAAA, 0xCCCCCCCC, 0xF0F0F0F0, 
-        0xFF00FF00, 0xFFFF0000};
-    register unsigned int r = (v & b[0]) != 0;
-    for (int i = 4; i > 0; i--) 
-    {
-        r |= ((v & b[i]) != 0) << i;
-    }
-    return r;
-}
 void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t l)
 {
     uint32_t * __restrict bins, * __restrict bins_sum;
-    uint32_t bit = 0;
     uint32_t * temp = (uint32_t*)malloc(l*sizeof(uint32_t)); 
     uint32_t buffer[MAX_THREADS];
-    bins=(uint32_t*)malloc(NUM_BINS*MAX_THREADS*sizeof(uint32_t));
-    bins_sum=(uint32_t*)malloc(NUM_BINS*MAX_THREADS*sizeof(uint32_t));
+    uint32_t num_blocks = l / BLOCK_SIZE;
+    uint32_t blocks_per_thread = num_blocks / MAX_THREADS; 
+    bins = (uint32_t *) malloc(NUM_BINS * num_blocks * sizeof(uint32_t));
+    bins_sum = (uint32_t *) malloc(NUM_BINS * num_blocks * sizeof(uint32_t));
 
-    uint32_t size = (nextPow2_2elements(l) + MAX_THREADS-1)/MAX_THREADS;
-    int shf = log2(size);
-    for (bit =0; bit <32; bit+=4)
+    for (uint32_t bit = 0; bit < 32; bit += 4)
     {
-        {
 #pragma omp parallel for
-            for (int i = 0; i < l; i+=size )
-            {
-                int k = i >> shf; 
-                    radixsortkernel(&arr[i], &temp[i], (l-i)>size?size:l-i, bit, &bins[(k)*NUM_BINS]);
-            }
-#pragma omp parallel
-            {
-#pragma omp for
-                for (int i = 0; i < NUM_BINS; i++)
-                {
-                    for(uint32_t j = i*MAX_THREADS; j < (i*MAX_THREADS + MAX_THREADS); j++)
-                    {
-                        bins_sum[j] = bins[j/MAX_THREADS + (MODULO(j, MAX_THREADS)) * NUM_BINS];
-                    }
-                    buffer[i] = prefix_sum_r(&bins_sum[i*MAX_THREADS], MAX_THREADS);
-                }
-#pragma omp barrier
-#pragma omp single
-                prefix_sum(buffer, NUM_BINS);
-#pragma omp barrier
-#pragma omp for
-                for (int i = 0; i < MAX_THREADS*NUM_BINS; i++)
-                {
-                    bins_sum[i] += buffer[i>>PREFIX_STEP_LOG];
-                }
-            }
+        for (int i = 0, k = 0 ; i < l; i += BLOCK_SIZE, k++) 
+            radixsortkernel(&arr[i], &temp[i], (l - i) > BLOCK_SIZE ? BLOCK_SIZE : l - i, bit, &bins[k * NUM_BINS]);
 
-#pragma omp parallel for
-            for (int i = 0; i < l; i+=size)
+#pragma omp parallel num_threads(1)
+        {
+            int tid = omp_get_thread_num();
+
+            int sum = 0;
+#pragma omp for
+            for (int i = 0; i < num_blocks * NUM_BINS; i++)
             {
-                int k = i >> shf; 
-                prefix_sum(&bins[(k)*NUM_BINS], NUM_BINS);
-                for(uint32_t j = i; j < ((i+size)>l?l:i+size); j++)
-                {
-                    uint32_t gindex = bins_sum[(k) + MAX_THREADS * ((temp[j]>>bit)&0xf)];
-                    uint32_t lindex = bins[(k) * NUM_BINS + ((temp[j]>>bit)&0xf)];
-                    arr[ gindex + j - i - lindex] = temp[j];
-                }
+                bins_sum[i] = sum;
+                sum += bins[i/num_blocks + (MODULO(i, num_blocks)) * NUM_BINS];
             }
+            buffer[tid] = sum;
+            //printf ("%d\n", buffer[tid]);
+
+#pragma omp barrier
+
+            int offset = 0;
+            for(int i = 0; i < tid; i++)
+                offset += buffer[i];
+            //printf ("%d\n", offset);
+#pragma omp for
+            for (int i = 0; i < NUM_BINS * MAX_THREADS; i++)
+            {
+                bins_sum[i] += offset;
+            }
+        }
+#pragma omp parallel for
+        for (int i = 0; i < num_blocks; i++)
+            prefix_sum(&bins[i * NUM_BINS], NUM_BINS);
+#pragma omp parallel for
+        for (int i = 0; i < l; i++)
+        {
+            uint32_t gindex = bins_sum[i/BLOCK_SIZE + num_blocks * ((temp[i] >> bit) & 0xF)];
+            uint32_t lindex = bins[(i / BLOCK_SIZE) * NUM_BINS + ((temp[i] >> bit) & 0xF)];
+            arr[gindex + i - ((i / BLOCK_SIZE) * BLOCK_SIZE) - lindex] = temp[i];
         }
     }
 }
@@ -281,7 +209,7 @@ uint32_t main(uint32_t argc, char** argv)
     srand(time(NULL));
     for(uint32_t i=0;i<size;i++)
     {
-        array[i]=rand()%16;
+        array[i]=size-i;//rand()%16;
         array_odd[i]=array[i];
     }
     printf("done input\n");
