@@ -29,8 +29,8 @@ int doCompute(struct cartesian *data1, int n1, struct cartesian *data2,
     for (ii =0; ii < nbins+2; ii++)
         for (j = 0; j < 256; j++)
             data_bins1[j][ii] = 0;
-
-    for (i = 0; i < ((doSelf) ? n1-1 : n1); i++)
+    int i_end = doSelf ? n1-1 : n1;
+    for (i = 0; i < i_end; i++)
     {
         const register float xi = data1[i].x;
         const register float yi = data1[i].y;
