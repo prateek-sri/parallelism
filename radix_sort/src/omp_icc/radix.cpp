@@ -8,11 +8,11 @@
 #include <omp.h>
 #include "CycleTimer.h"
 
-#define SIZE  268435456//16777216//65536 // limit to sum of values not exceeding INT_MAX in prefix sum
+#define SIZE  268435456// limit to sum of values not exceeding INT_MAX in prefix sum
 #define MAX_THREADS 256
 #define NUM_BINS 16
 #define MODULO(a, b) ((a) & ((b) - 1)) // only power of 2 will work
-#define BLOCK_SIZE 2048
+#define BLOCK_SIZE 1024
 #define PREFIX_STEP 256
 #define PREFIX_STEP_LOG 8
 
@@ -122,7 +122,7 @@ void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t 
     uint32_t * __restrict bins, * __restrict bins_sum;
     uint32_t * temp = (uint32_t*)malloc(l*sizeof(uint32_t)); 
     uint32_t buffer[MAX_THREADS];
-    uint32_t num_blocks = l / BLOCK_SIZE;
+    uint32_t num_blocks = (l + BLOCK_SIZE - 1) / BLOCK_SIZE;
     uint32_t blocks_per_thread = num_blocks / MAX_THREADS; 
     bins = (uint32_t *) malloc(NUM_BINS * num_blocks * sizeof(uint32_t));
     bins_sum = (uint32_t *) malloc(NUM_BINS * num_blocks * sizeof(uint32_t));
@@ -133,32 +133,35 @@ void radixsort(uint32_t* __restrict arr, uint32_t* __restrict arr_odd, uint32_t 
         for (int i = 0, k = 0 ; i < l; i += BLOCK_SIZE, k++) 
             radixsortkernel(&arr[i], &temp[i], (l - i) > BLOCK_SIZE ? BLOCK_SIZE : l - i, bit, &bins[k * NUM_BINS]);
 
-#pragma omp parallel num_threads(1)
+#pragma omp parallel //num_threads(1)
         {
             int tid = omp_get_thread_num();
 
             int sum = 0;
-#pragma omp for
+#pragma omp for schedule(static)
             for (int i = 0; i < num_blocks * NUM_BINS; i++)
             {
                 bins_sum[i] = sum;
                 sum += bins[i/num_blocks + (MODULO(i, num_blocks)) * NUM_BINS];
+               // printf ("%d %d %d\n", tid, i, bins_sum[i]);
             }
             buffer[tid] = sum;
-            //printf ("%d\n", buffer[tid]);
+           //printf ("%d %d %d\n", bit, tid, buffer[tid]);
 
 #pragma omp barrier
 
             int offset = 0;
             for(int i = 0; i < tid; i++)
                 offset += buffer[i];
-            //printf ("%d\n", offset);
-#pragma omp for
-            for (int i = 0; i < NUM_BINS * MAX_THREADS; i++)
+            //printf ("%d %d\n", tid, offset);
+#pragma omp for schedule(static)
+            for (int i = 0; i < NUM_BINS * num_blocks; i++)
             {
                 bins_sum[i] += offset;
+               // printf ("%d %d %d\n", tid, i, bins_sum[i]);
             }
         }
+
 #pragma omp parallel for
         for (int i = 0; i < num_blocks; i++)
             prefix_sum(&bins[i * NUM_BINS], NUM_BINS);
