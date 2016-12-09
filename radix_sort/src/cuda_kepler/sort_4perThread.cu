@@ -15,7 +15,7 @@
 #define BANK_OFFSET(n) (n) + (((n) >> 5))
 #define NUM_BLOCKS(length, dim) nextPow2(length) / (2 * dim)
 #define ELEM 4
-#define TOTAL_THREADS 128
+#define TOTAL_THREADS 512
 #define TWO_PWR(n) (1 << (n))
 extern float toBW(int bytes, float sec);
 
