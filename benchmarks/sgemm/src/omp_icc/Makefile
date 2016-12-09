@@ -2,6 +2,6 @@
 
 LANGUAGE=c
 SRCDIR_OBJS=main.o io.o sgemm_kernel.o
-APP_CFLAGS=-fopenmp
-APP_CXXFLAGS=-fopenmp
+APP_CFLAGS=
+APP_CXXFLAGS=
 APP_LDFLAGS=-lstdc++ -lgomp
