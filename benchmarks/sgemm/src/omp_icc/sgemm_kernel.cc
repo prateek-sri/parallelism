@@ -11,29 +11,37 @@
  */
 
 #include <iostream>
-
+#define LEN 16
 
 void basicSgemm( char transa, char transb, int m, int n, int k, float alpha, const float *A, int lda, const float *B, int ldb, float beta, float *C, int ldc )
 {
-  if ((transa != 'N') && (transa != 'n')) {
-    std::cerr << "unsupported value of 'transa' in regtileSgemm()" << std::endl;
-    return;
-  }
-  
-  if ((transb != 'T') && (transb != 't')) {
-    std::cerr << "unsupported value of 'transb' in regtileSgemm()" << std::endl;
-    return;
-  }
-  #pragma omp parallel for// collapse (2)
-  for (int mm = 0; mm < m; ++mm) {
-    for (int nn = 0; nn < n; ++nn) {
-      float c = 0.0f;
-      for (int i = 0; i < k; ++i) {
-        float a = A[mm + i * lda]; 
-        float b = B[nn + i * ldb];
-        c += a * b;
-      }
-      C[mm+nn*ldc] = C[mm+nn*ldc] * beta + alpha * c;
+    if ((transa != 'N') && (transa != 'n')) {
+        std::cerr << "unsupported value of 'transa' in regtileSgemm()" << std::endl;
+        return;
     }
-  }
+
+    if ((transb != 'T') && (transb != 't')) {
+        std::cerr << "unsupported value of 'transb' in regtileSgemm()" << std::endl;
+        return;
+    }
+    for (int mm = 0; mm < m; mm++) 
+        for (int nn = 0; nn < n; nn++)
+            C[mm + nn * ldc] = 0;
+#pragma omp parallel for //collapse (3)
+    for (int mm = 0; mm < m; mm += LEN) {
+        for (int nn = 0; nn < n; nn += LEN) {
+            for (int i = 0; i < k; i += LEN) {
+                for (int m2 = mm; m2 < mm + LEN; m2++)
+                    for (int n2 = nn; n2 < nn + LEN; n2++) {
+                        float c = 0.0f;
+                        for (int ii = i; ii < i + LEN; ii++) {
+                            float a = A[m2 + ii * lda]; 
+                            float b = B[n2 + ii * ldb];
+                            c += a * b;
+                        }
+                        C[m2 + n2 * ldc] += alpha * c;
+                    } 
+            }
+        }
+    }
 }
