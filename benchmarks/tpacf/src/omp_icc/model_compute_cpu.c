@@ -57,7 +57,7 @@ int doCompute(struct cartesian *data1, int n1, struct cartesian *data2,
                     min = k;
             }
             //#pragma omp atomic	  
-            data_bins1[tid][max-1] += 1; /*k = max;*/ 
+            data_bins1[tid][max-1] ++; /*k = max;*/ 
         }
     }
 #pragma omp parallel for
