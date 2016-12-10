@@ -30,6 +30,7 @@ Author: Lijiuan Luo (lluo3@uiuc.edu)
 #include <deque>
 #include <list>
 #include <iostream>
+#include <omp.h>
 
 #define MAX_THREADS_PER_BLOCK 512
 #define NUM_SM 30//the number of Streaming Multiprocessors; may change in the future archs 
@@ -75,6 +76,7 @@ void runGPU(int argc, char** argv);
 ////////////////////////////////////////////////////////////////////
 void  BFS_CPU( Node * h_graph_nodes,Edge * h_graph_edges,
         int * color, int * h_cost, int source){
+//    std::cout<<"rrt";
     std::list<int> wavefront;	
     wavefront.push_back(source);
     color[source] = GRAY;
@@ -86,7 +88,7 @@ void  BFS_CPU( Node * h_graph_nodes,Edge * h_graph_edges,
 #pragma omp parallel
         {
             std::list<int> localbuf;
-#pragma omp parallel for
+#pragma omp for
             for(int i=h_graph_nodes[index].x; i<(h_graph_nodes[index].y + h_graph_nodes[index].x); i++)
             {
                 int id = h_graph_edges[i].x;
@@ -101,16 +103,14 @@ void  BFS_CPU( Node * h_graph_nodes,Edge * h_graph_edges,
             {
                 wavefront.splice(wavefront.end(),localbuf);
                 localbuf.clear();
-                /*
-                while(!localbuf.empty())
-                {
-                    //std::cout<<"Adding "<<localbuf.front()<<" to the wavefront\n";
-                    wavefront.push_back(localbuf.front());
-                    localbuf.pop_front();
-                }
-                */
+
+                //while(!localbuf.empty())
+                //{
+                //    wavefront.push_back(localbuf.front());
+                //    localbuf.pop_front();
+                //}
+
             }
-//#pragma omp barrier
         }
         //std::cout<<"New index "<<index<<" ending\n";
         color[index] = BLACK;
@@ -144,7 +144,6 @@ void runCPU( int argc, char** argv)
     }
 
     pb_SwitchToTimer(&timers, pb_TimerID_IO);
-    //printf("Reading File\n");
     //Read in Graph from a file
     fp = fopen(params->inpFiles[0],"r");
     if(!fp)
@@ -183,7 +182,6 @@ void runCPU( int argc, char** argv)
     if(fp)
         fclose(fp);    
 
-    //printf("Read File\n");
 
     // allocate mem for the result on host side
     int* h_cost = (int*) malloc( sizeof(int)*no_of_nodes);
@@ -191,7 +189,6 @@ void runCPU( int argc, char** argv)
         h_cost[i] = INF;
     }
     h_cost[source] = 0;
-    //printf("start cpu version\n");
     unsigned int cpu_timer = 0;
     pb_SwitchToTimer(&timers, pb_TimerID_COMPUTE);
     BFS_CPU( h_graph_nodes, h_graph_edges, color, h_cost,  source 
