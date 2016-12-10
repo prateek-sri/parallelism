@@ -1,0 +1,16 @@
+mkdir -p build/omp_icc_icc
+icc -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -xMIC-AVX512 -qopt-report=2 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp -fopenmp -c src/omp_icc/main.c -o build/omp_icc_icc/main.o
+icc -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -xMIC-AVX512 -qopt-report=2 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp -fopenmp -c src/omp_icc/util.c -o build/omp_icc_icc/util.o
+icc -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -xMIC-AVX512 -qopt-report=2 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp -fopenmp -c /home1/03706/psrivast/parboil/common/src/parboil.c -o build/omp_icc_icc/parboil.o
+icc build/omp_icc_icc/main.o build/omp_icc_icc/util.o build/omp_icc_icc/parboil.o -o build/omp_icc_icc/histo  -lm -lpthread -qopenmp -lgomp
+Base implementation of histogramming.
+Maintained by Nady Obeid <obeid1@ece.uiuc.edu>
+
+IO        : 0.093373
+ -Input     : 0.023558
+ -Output    : 0.069814
+Compute   : 21.363041
+Timer Wall Time: 21.456476
+Pass
+Parboil parallel benchmark suite, version 0.2
+

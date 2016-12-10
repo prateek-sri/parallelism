@@ -1,0 +1,7 @@
+GFLOPs = 0.033524
+IO        : 0.227116
+Compute   : 0.117294
+Timer Wall Time: 0.345011
+Pass
+Parboil parallel benchmark suite, version 0.2
+

@@ -1,0 +1,10 @@
+Min distance: 1.000000 arcmin
+Max distance: 10000.000000 arcmin
+Bins per dec: 5
+Total bins  : 20
+IO        : 6.879234
+Compute   : 12.861166
+Timer Wall Time: 19.740873
+Pass
+Parboil parallel benchmark suite, version 0.2
+

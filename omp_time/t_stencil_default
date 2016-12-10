@@ -1,0 +1,15 @@
+mkdir -p build/omp_icc_icc
+icc -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -xMIC-AVX512 -qopt-report=2 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp -fopenmp -c src/omp_icc/main.c -o build/omp_icc_icc/main.o
+icc -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -xMIC-AVX512 -qopt-report=2 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp -fopenmp -c src/omp_icc/kernels.c -o build/omp_icc_icc/kernels.o
+icc -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -xMIC-AVX512 -qopt-report=2 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp -fopenmp -c src/omp_icc/file.c -o build/omp_icc_icc/file.o
+icc -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -xMIC-AVX512 -qopt-report=2 -DUSE_MMAP_LARGE -DUSE_MMAP_LARGE_EXT -qopenmp -fopenmp -c /home1/03706/psrivast/parboil/common/src/parboil.c -o build/omp_icc_icc/parboil.o
+icc build/omp_icc_icc/main.o build/omp_icc_icc/kernels.o build/omp_icc_icc/file.o build/omp_icc_icc/parboil.o -o build/omp_icc_icc/stencil  -lm -lpthread -qopenmp -lgomp
+CPU-based 7 points stencil codes****
+Original version by Li-Wen Chang <lchang20@illinois.edu> and I-Jui Sung<sung10@illinois.edu>
+This version maintained by Chris Rodrigues  ***********
+IO        : 0.454828
+Compute   : 2.907339
+Timer Wall Time: 3.362169
+Pass
+Parboil parallel benchmark suite, version 0.2
+
