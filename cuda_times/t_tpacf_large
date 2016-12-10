@@ -1,0 +1,15 @@
+Resolving CUDA runtime library...
+Min distance: 1.000000 arcmin
+Max distance: 10000.000000 arcmin
+Bins per dec: 5
+Total bins  : 20
+IO        : 0.713265
+Kernel    : 4.425534
+Copy      : 1.462569
+Driver    : 0.000056
+Compute   : 0.011011
+CPU/Kernel Overlap: 0.000147
+Timer Wall Time: 6.613480
+Pass
+Parboil parallel benchmark suite, version 0.2
+

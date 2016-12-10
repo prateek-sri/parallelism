@@ -1,0 +1,83 @@
+==28245== NVPROF is profiling process 28245, command: build/cuda_base_default/bfs -i /home1/03706/psrivast/parboil/datasets/bfs/UT/input/graph_input.dat -o /home1/03706/psrivast/parboil/benchmarks/bfs/run/UT/bfs.out
+==28245== Warning: Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==28245== Profiling application: build/cuda_base_default/bfs -i /home1/03706/psrivast/parboil/datasets/bfs/UT/input/graph_input.dat -o /home1/03706/psrivast/parboil/benchmarks/bfs/run/UT/bfs.out
+==28245== Profiling result:
+==28245== Metric result:
+Invocations                               Metric Name                        Metric Description         Min         Max         Avg
+Device "Tesla K20m (0)"
+	Kernel: BFS_kernel(int*, int*, int2*, int2*, int*, int*, int, int*, int, int)
+        817                  l1_cache_global_hit_rate                        L1 Global Hit Rate       0.00%       0.00%       0.00%
+        817                   l1_cache_local_hit_rate                         L1 Local Hit Rate       0.00%       0.00%       0.00%
+        817                             sm_efficiency                   Multiprocessor Activity       3.77%      21.09%       7.90%
+        817                                       ipc                              Executed IPC    0.039586    0.397192    0.186354
+        817                        achieved_occupancy                        Achieved Occupancy    0.237500    0.258275    0.248508
+        817                    sm_efficiency_instance                   Multiprocessor Activity       3.77%      21.09%       7.90%
+        817                              ipc_instance                              Executed IPC    0.039586    0.397192    0.186354
+        817                      dram_read_throughput             Device Memory Read Throughput  114.12MB/s  4.8502GB/s  1.6593GB/s
+        817                     dram_write_throughput            Device Memory Write Throughput  25.404MB/s  3.8910GB/s  1.2766GB/s
+        817                         shared_efficiency                  Shared Memory Efficiency       2.39%      23.67%       6.76%
+        817                            gld_efficiency             Global Memory Load Efficiency      12.50%      23.86%      18.19%
+        817                            gst_efficiency            Global Memory Store Efficiency      12.50%      37.50%      23.26%
+        817                 warp_execution_efficiency                 Warp Execution Efficiency      26.71%      90.47%      43.59%
+        817                                issued_ipc                                Issued IPC    0.056034    0.562039    0.271901
+        817                    issue_slot_utilization                    Issue Slot Utilization       1.30%      13.74%       6.57%
+        817                   local_load_transactions                   Local Load Transactions           0           0           0
+        817                  local_store_transactions                  Local Store Transactions           0           0           0
+        817                  shared_load_transactions                  Shared Load Transactions          17        6240        1373
+        817                 shared_store_transactions                 Shared Store Transactions          17        6344        1400
+        817                          gld_transactions                  Global Load Transactions           2        2119         596
+        817                          gst_transactions                 Global Store Transactions           1        1107         299
+        817                  sysmem_read_transactions           System Memory Read Transactions           0           0           0
+        817                 sysmem_write_transactions          System Memory Write Transactions           1          17           4
+        817                    dram_read_transactions           Device Memory Read Transactions          39        8343        2447
+        817                   dram_write_transactions          Device Memory Write Transactions           6        6761        1912
+        817                      l2_read_transactions                      L2 Read Transactions          46        8985        2523
+        817                     l2_write_transactions                     L2 Write Transactions           8        4959        1378
+        817         warp_nonpred_execution_efficiency  Warp Non-Predicated Execution Efficiency      18.42%      83.76%      35.94%
+        817                               cf_executed        Executed Control-Flow Instructions         135        8590        2048
+        817                             ldst_executed          Executed Load/Store Instructions          43       13486        3048
+        817                             flop_count_sp  Floating Point Operations(Single Precisi           0           0           0
+        817                         flop_count_sp_add  Floating Point Operations(Single Precisi           0           0           0
+        817                         flop_count_sp_mul  Floating Point Operation(Single Precisio           0           0           0
+        817                         flop_count_sp_fma  Floating Point Operations(Single Precisi           0           0           0
+        817                             flop_count_dp  Floating Point Operations(Double Precisi           0           0           0
+        817                         flop_count_dp_add  Floating Point Operations(Double Precisi           0           0           0
+        817                         flop_count_dp_mul  Floating Point Operations(Double Precisi           0           0           0
+        817                         flop_count_dp_fma  Floating Point Operations(Double Preciso           0           0           0
+        817                     flop_count_sp_special  Floating Point Operations(Single Precisi           0           0           0
+        817                          stall_inst_fetch  Issue Stall Reasons (Instructions Fetch)       0.69%      17.89%       4.82%
+        817                     stall_exec_dependency  Issue Stall Reasons (Execution Dependenc       3.19%      45.91%      19.48%
+        817                   stall_memory_dependency        Issue Stall Reasons (Data Request)       1.09%       9.16%       5.01%
+        817                                stall_sync     Issue Stall Reasons (Synchronization)       9.63%      89.85%      55.81%
+        817                               stall_other               Issue Stall Reasons (Other)       0.10%       0.47%       0.19%
+        817                     l1_shared_utilization              L1/Shared Memory Utilization     Low (1)     Low (1)     Low (1)
+        817                            l2_utilization                      L2 Cache Utilization     Low (1)     Low (1)     Low (1)
+        817                           tex_utilization                 Texture Cache Utilization    Idle (0)     Low (1)    Idle (0)
+        817                          dram_utilization                 Device Memory Utilization     Low (1)     Low (1)     Low (1)
+        817                        sysmem_utilization                 System Memory Utilization     Low (1)     Low (1)     Low (1)
+        817                       ldst_fu_utilization      Load/Store Function Unit Utilization     Low (1)     Mid (4)     Low (2)
+        817                        alu_fu_utilization      Arithmetic Function Unit Utilization     Low (1)     Low (1)     Low (1)
+        817                         cf_fu_utilization    Control-Flow Function Unit Utilization     Low (1)     Low (1)     Low (1)
+        817                        tex_fu_utilization         Texture Function Unit Utilization     Low (1)     Low (1)     Low (1)
+        817                             inst_executed                     Instructions Executed         326       33601        7917
+        817                               issue_slots                               Issue Slots         368       45219       11061
+        817                      l2_atomic_throughput           L2 Throughput (Atomic requests)  8.4679MB/s  2.1144GB/s  679.10MB/s
+        817                                inst_fp_32                   FP Instructions(Single)           0           0           0
+        817                                inst_fp_64                   FP Instructions(Double)           0           0           0
+        817                              inst_integer                      Integer Instructions        2064       77160       20233
+        817                          inst_bit_convert                  Bit-Convert Instructions         512        9274        2243
+        817                              inst_control                 Control-Flow Instructions        1533       54219       12598
+        817                        inst_compute_ld_st                   Load/Store Instructions         526       64728       16381
+        817                                 inst_misc                         Misc Instructions        3589       58139       13702
+        817           inst_inter_thread_communication                 Inter-Thread Instructions           0           0           0
+        817                       atomic_transactions                       Atomic Transactions           2        3645        1003
+        817           atomic_transactions_per_request           Atomic Transactions Per Request    1.000000   15.121212   10.683428
+        817                   l2_l1_read_transactions   L2 Read Transactions (L1 read requests)           2        2299         656
+        817                  l2_l1_write_transactions  L2 Write Transactions (L1 write requests           1        1256         348
+        817                    l2_atomic_transactions         L2 Transactions (Atomic requests)           4        7308        2036
+        817                           stall_pipe_busy           Issue Stall Reasons (Pipe Busy)       0.07%       2.08%       0.61%
+        817                        flop_sp_efficiency              FLOP Efficiency(Peak Single)       0.00%       0.00%       0.00%
+        817                        flop_dp_efficiency              FLOP Efficiency(Peak Double)       0.00%       0.00%       0.00%
+        817                     stall_memory_throttle     Issue Stall Reasons (Memory Throttle)       0.00%      21.53%       9.74%
+        817                  eligible_warps_per_cycle           Eligible Warps Per Active Cycle    0.077876    0.813965    0.383485
+        817                         atomic_throughput                         Atomic Throughput  33.871MB/s  8.4413GB/s  2.6611GB/s

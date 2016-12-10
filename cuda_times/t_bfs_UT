@@ -1,0 +1,12 @@
+Resolving CUDA runtime library...
+Starting GPU kernel
+GPU kernel done
+IO        : 0.201984
+Kernel    : 0.050847
+Copy      : 1.467491
+Driver    : 0.050848
+CPU/Kernel Overlap: 0.050902
+Timer Wall Time: 1.720393
+Pass
+Parboil parallel benchmark suite, version 0.2
+

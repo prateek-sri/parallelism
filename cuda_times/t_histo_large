@@ -1,0 +1,20 @@
+/opt/apps/cuda/6.5/bin/nvcc src/cuda_base/main.cu -I/home1/03706/psrivast/parboil/common/include -I/opt/apps/cuda/6.5/include -O3 -arch compute_20  -c -o build/cuda_base_default/main.o
+/opt/apps/cuda/6.5/bin/nvcc build/cuda_base_default/main.o build/cuda_base_default/histo_final.o build/cuda_base_default/histo_intermediates.o build/cuda_base_default/histo_main.o build/cuda_base_default/histo_prescan.o build/cuda_base_default/util.o build/cuda_base_default/parboil_cuda.o -o build/cuda_base_default/histo -L/opt/apps/cuda/6.5/lib64 -lm -lpthread 
+Resolving CUDA runtime library...
+
+IO        : 1.544657
+ -Input     : 1.529042
+ -Output    : 0.015615
+Kernel    : 46.879420
+ -PreScanKernel      : 2.830387
+ -PostPreMems        : 32.009413
+ -IntermediatesKernel: 2.836357
+ -MainKernel         : 5.900888
+ -FinalKernel        : 3.302357
+Driver    : 46.904921
+Compute   : 0.000287
+CPU/Kernel Overlap: 46.879420
+Timer Wall Time: 48.563164
+Pass
+Parboil parallel benchmark suite, version 0.2
+

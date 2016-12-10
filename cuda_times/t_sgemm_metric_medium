@@ -1,0 +1,12 @@
+Resolving CUDA runtime library...
+GFLOPs = 575.788
+IO        : 1.734876
+Kernel    : 0.003726
+Copy      : 0.005009
+Driver    : 0.000109
+Compute   : 1.456893
+CPU/Kernel Overlap: 0.000180
+Timer Wall Time: 3.201088
+Pass
+Parboil parallel benchmark suite, version 0.2
+
