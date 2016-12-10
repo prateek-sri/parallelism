@@ -140,7 +140,6 @@ int main(int argc, char* argv[]) {
 
     fclose(f);
 
-    B
         if (result != img_width*img_height){
             fputs("Error reading input array from file\n", stderr);
             return -1;
