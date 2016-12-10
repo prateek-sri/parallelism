@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<bag>
+ <entry path="start_tsc">
+  <indexFields>
+   <field path="dd_region"/>
+   <field path="dd_region.process"/>
+   <field path="dd_region.bin"/>
+  </indexFields>
+  <int64Fields>
+   <field path="count"/>
+   <field path="end_tsc"/>
+  </int64Fields>
+ </entry>
+</bag>
